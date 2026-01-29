@@ -10,173 +10,572 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Site styles -->
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{
+      --max: 980px;
+      --text: #111;
+      --muted: #6b6b6b;
+      --bg: #f6f6f6;
+
+      --neon: #39ff14;
+      --neon-soft: rgba(57,255,20,.55);
+      --neon-faint: rgba(57,255,20,.25);
+    }
+
+    *{ box-sizing:border-box; }
+    html, body { height: 100%; }
+
+    body{
+      margin:0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      cursor: none; /* replace system cursor */
+    }
+
+    /* Canvas writing layer behind content */
+    #drawLayer{
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Page content above canvas */
+    .page{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    /* Header */
+    .topbar{
+      display:flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 60px;
+    }
+
+    .brand__link{
+      font-size: 40px;
+      font-weight: 700;
+      color: #111;
+      text-decoration: none;
+    }
+
+    .nav{
+      display:flex;
+      gap:22px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav__link{
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .nav__link:hover{ text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Sections */
+    .section{ margin-bottom: 48px; }
+
+    .h2{
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 18px 0;
+    }
+    @media (min-width: 900px){
+      .h2{ font-size: 32px; }
+    }
+
+    .body{
+      margin: 0;
+      max-width: 70ch;
+      color: #3a3a3a;
+    }
+
+    /* Work list */
+    .work{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .work__item{
+      margin: 0 0 14px 0;
+      font-size: 15px;
+      color: #3a3a3a;
+    }
+
+    /* Only real links are underlined */
+    .work__title{
+      color: #111;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* No-link items: not underlined */
+    .work__title--nolink{
+      color: #111;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: default;
+    }
+
+    .work__meta{
+      color: #555;
+    }
+
+    /* Footer */
+    .footer{
+      margin-top: 48px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Big neon pencil cursor */
+    #cursor{
+      position: fixed;
+      width: 110px;
+      height: 28px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%) rotate(-15deg);
+      filter: drop-shadow(0 0 10px var(--neon-soft)) drop-shadow(0 0 22px var(--neon-faint));
+    }
+
+    #cursor.pencil::before{
+      content:"";
+      position:absolute;
+      left:14px; top:10px;
+      width:74px; height:10px;
+      background: linear-gradient(to right, var(--neon), rgba(57,255,20,.75));
+      border-radius: 6px;
+      box-shadow: 0 0 14px var(--neon-soft);
+    }
+    #cursor.pencil::after{
+      content:"";
+      position:absolute;
+      left:88px; top:10px;
+      width:10px; height:10px;
+      background: linear-gradient(#cfcfcf, #7a7a7a);
+      border-radius: 2px;
+    }
+
+    #cursor .eraser{
+      position:absolute;
+      left:100px; top:9px;
+      width:14px; height:12px;
+      background: rgba(57,255,20,.45);
+      border: 1px solid rgba(57,255,20,.7);
+      border-radius: 3px;
+      box-shadow: 0 0 12px var(--neon-soft);
+    }
+
+    #cursor .tip{
+      position:absolute;
+      left:6px; top:10px;
+      width:0; height:0;
+      border-top:5px solid transparent;
+      border-bottom:5px solid transparent;
+      border-right:10px solid rgba(57,255,20,.45);
+      filter: drop-shadow(0 0 10px var(--neon-soft));
+    }
+
+    #cursor .lead{
+      position:absolute;
+      left:2px; top:12px;
+      width:0; height:0;
+      border-top:3px solid transparent;
+      border-bottom:3px solid transparent;
+      border-right:6px solid rgba(57,255,20,.9);
+      filter: drop-shadow(0 0 10px var(--neon-soft));
+    }
+
+    /* Hand cursor over links */
+    #cursor.hand{
+      width: 32px;
+      height: 32px;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 0 12px var(--neon-soft));
+    }
+    #cursor.hand::before{
+      content:"☞";
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%, -55%);
+      font-size: 28px;
+      color: var(--neon);
+      text-shadow: 0 0 12px var(--neon-soft), 0 0 26px var(--neon-faint);
+    }
+    #cursor.hand::after{ content:""; }
+
+    /* Neon sparkles (optional, but very “alive”) */
+    .sparkle{
+      position: fixed;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: var(--neon);
+      box-shadow: 0 0 12px var(--neon);
+      animation: fadeOut .7s forwards;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      opacity: .9;
+    }
+    @keyframes fadeOut{
+      to{ opacity:0; transform: translate(-50%, -50%) scale(0); }
+    }
+
+    @media (max-width: 640px){
+      .topbar{ flex-direction: column; align-items: flex-start; margin-bottom: 34px; }
+      .brand__link{ font-size: 34px; }
+    }
+  </style>
 </head>
 
 <body>
+  <canvas id="drawLayer"></canvas>
 
-<div class="page">
+  <div class="page" id="top">
 
-  <!-- Top bar -->
-  <header class="topbar">
-    <div class="brand">
-      <a href="#top" class="brand__link">Michelle Hulan</a>
-    </div>
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <a href="#top" class="brand__link">Michelle Hulan</a>
+      </div>
 
-    <nav class="nav">
-      <a class="nav__link" href="#top">Home</a>
-      <a class="nav__link" href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
-      <a class="nav__link" href="#creative-writing">Creative Writing</a>
-      <a class="nav__link" href="#contact">Contact</a>
-    </nav>
-  </header>
+<nav class="nav" aria-label="Primary">
+  <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
+</nav>
 
-  <main id="top">
+    <main>
 
-    <!-- Bio -->
-    <section class="section">
-      <h2 class="h2">Bio</h2>
-      <p class="body">
-        Michelle Hulan is a poet and writer. Her work has appeared in
-        <em>the Toronto Journal</em>, <em>HAD</em>, <em>the Citron Review</em>,
-        <em>RHINO</em>, and elsewhere.
-      </p>
-    </section>
+      <!-- Bio -->
+      <section class="section" aria-labelledby="bio-title">
+        <h2 class="h2" id="bio-title">Bio</h2>
+        <p class="body">
+          Michelle Hulan is a poet and writer. Her work has appeared in <em>the Toronto Journal</em>,
+          <em>HAD</em>, <em>the Citron Review</em>, <em>RHINO</em>, and elsewhere. She received her MA in
+          English from the University of Ottawa and now lives in Brooklyn with her family.
+        </p>
+      </section>
 
-    <!-- Selected Work -->
-    <section class="section" id="creative-writing">
-      <h2 class="h2">Selected Work</h2>
-      <ul class="work">
-        <li class="work__item">
-          <a class="work__title"
-             href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/"
-             target="_blank">
-            "The Universe, as in the One Last Song for the Lonely Hearts"
-          </a>
-        </li>
-      </ul>
-    </section>
+      <!-- Selected Work -->
+      <section class="section" id="creative-writing" aria-labelledby="work-title">
+        <h2 class="h2" id="work-title">Selected Work</h2>
 
-    <!-- Contact -->
-    <section class="section" id="contact">
-      <h2 class="h2">Contact</h2>
-      <p class="body">
-        Email:
-        <a href="mailto:michellehulan@gmail.com">michellehulan@gmail.com</a>
-      </p>
-    </section>
+        <ul class="work">
 
-  </main>
+          <li class="work__item">
+            <a class="work__title"
+               href="https://www.vol1brooklyn.com/2025/12/07/sunday-stories-rats/"
+               target="_blank" rel="noopener noreferrer">
+              "Rats!"
+            </a>
+            <span class="work__meta"> Vol. 1 Brooklyn, <em>Forthcoming</em></span>
+          </li>
 
-  <footer class="footer">
-    <small>© <span id="year"></span> Michelle Hulan</small>
-  </footer>
+          <li class="work__item">
+            <a class="work__title"
+               href="https://torontojournal.com/issue5-time-trade/"
+               target="_blank" rel="noopener noreferrer">
+              "Time Trade."
+            </a>
+            <span class="work__meta"> <em>Toronto Journal</em>, Issue 5, Winter 2025</span>
+          </li>
 
-</div>
+          <li class="work__item">
+            <a class="work__title"
+               href="https://citronreview.com/2023/06/30/meara-can-you-see-the-light/"
+               target="_blank" rel="noopener noreferrer">
+              "Meara, Can You See the Light?"
+            </a>
+            <span class="work__meta">
+              <em>The Citron Review</em>, Summer 2023 (Best of the Net 2023 Nominee)
+            </span>
+          </li>
 
-<!-- Neon cursor + ink -->
-<div id="neon-cursor"></div>
-<div id="ink-layer"></div>
+          <li class="work__item">
+            <a class="work__title"
+               href="https://www.litmagazine.org/when-i-was-young-my-future/"
+               target="_blank" rel="noopener noreferrer">
+              "When I was Young, My Future,"
+            </a>
+            <span class="work__meta"> <em>LIT Magazine</em>, Fall 2023</span>
+          </li>
 
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
+          <li class="work__item">
+            <a class="work__title"
+               href="https://www.havehashad.com/hadposts/hunger"
+               target="_blank" rel="noopener noreferrer">
+              "Hunger,"
+            </a>
+            <span class="work__meta"> <em>HAD</em>, March 2023</span>
+          </li>
 
-// ==============================
-// ✍️ YOUR POEM GOES HERE
-// ==============================
+          <!-- NO LINK -->
+          <li class="work__item">
+            <span class="work__title--nolink">
+              "Aubade in Which the Light Speaks,"
+            </span>
+            <span class="work__meta"> <em>RHINO</em>, Summer 2023 (Print)</span>
+          </li>
 
-const POEM_TEXT = `
-PASTE YOUR FULL POEM TEXT HERE.
-This will loop forever as people drag.
+          <li class="work__item">
+            <a class="work__title"
+               href="https://sundoglit.com/Michelle-Hulan/"
+               target="_blank" rel="noopener noreferrer">
+              "Moon I Can't Touch,"
+            </a>
+            <span class="work__meta"> <em>Sundog Lit</em>, Issue 21, 2022</span>
+          </li>
 
-Add line breaks.
-They will be preserved.
-`.trim();
+          <li class="work__item">
+            <a class="work__title"
+               href="https://fivesouth.net/hulan-i-was-not-a-tender-lover/"
+               target="_blank" rel="noopener noreferrer">
+              "I Was Not a Tender Lover,"
+            </a>
+            <span class="work__meta"> <em>Five South</em>, Fall 2022 (Best of the Net 2023 Nominee)</span>
+          </li>
 
-// ==============================
-// CURSOR + WRITING ENGINE
-// ==============================
+          <li class="work__item">
+            <a class="work__title"
+               href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/"
+               target="_blank" rel="noopener noreferrer">
+              "The Universe, as in the One Last Song for the Lonely Hearts,"
+            </a>
+            <span class="work__meta"> <em>Chestnut Review</em>, Summer 2022</span>
+          </li>
 
-const cursorEl = document.getElementById("neon-cursor");
-const inkLayer = document.getElementById("ink-layer");
+          <!-- NO LINK -->
+          <li class="work__item">
+            <span class="work__title--nolink">
+              "I Contemplate Our Cage &amp; Get Left Behind,"
+            </span>
+            <span class="work__meta"> <em>Poet Lore</em>, Spring 2022 (Print)</span>
+          </li>
 
-let mouseX = 0, mouseY = 0;
-let isDown = false;
+          <li class="work__item">
+            <a class="work__title"
+               href="https://mudseasonreview.com/2021/02/poetry-issue-54/"
+               target="_blank" rel="noopener noreferrer">
+              "Sonnet for Fat Purple Figs"
+            </a>
+            <span class="work__meta"> <em>Mud Season Review</em>, Issue 54, 2020</span>
+          </li>
 
-const STEP_PX = 14;
-const CHUNK_LEN = 6;
-const MAX_INK = 1400;
+        </ul>
+      </section>
 
-let index = 0;
-let lastX = null;
-let lastY = null;
+      <!-- Contact -->
+      <section class="section" id="contact" aria-labelledby="contact-title">
+        <h2 class="h2" id="contact-title">Contact</h2>
+        <p class="body">
+          Email: <a class="work__title" style="text-decoration: underline;" href="mailto:michellehulan@gmail.com">michellehulan@gmail.com</a>
+        </p>
+      </section>
+    </main>
 
-function nextChunk() {
-  const chunk = POEM_TEXT.slice(index, index + CHUNK_LEN);
-  index += CHUNK_LEN;
-  if (index >= POEM_TEXT.length) index = 0;
-  return chunk;
-}
+    <footer class="footer">
+      <small>© <span id="year"></span> Michelle Hulan</small>
+    </footer>
 
-function stamp(x, y) {
-  const el = document.createElement("span");
-  el.className = "ink";
-  el.textContent = nextChunk();
-  el.style.left = x + "px";
-  el.style.top = y + "px";
-  inkLayer.appendChild(el);
+  </div>
 
-  while (inkLayer.children.length > MAX_INK) {
-    inkLayer.removeChild(inkLayer.firstChild);
-  }
-}
+  <!-- Cursor -->
+  <div id="cursor" class="pencil" aria-hidden="true">
+    <div class="tip"></div>
+    <div class="lead"></div>
+    <div class="eraser"></div>
+  </div>
 
-function maybeStamp(x, y) {
-  if (lastX === null) {
-    lastX = x;
-    lastY = y;
-    stamp(x, y);
-    return;
-  }
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  const dx = x - lastX;
-  const dy = y - lastY;
-  const dist = Math.hypot(dx, dy);
+    // ============
+    // Cursor motion
+    // ============
+    const cursor = document.getElementById("cursor");
+    let mouseX = innerWidth / 2, mouseY = innerHeight / 2;
+    let cx = mouseX, cy = mouseY;
 
-  if (dist > STEP_PX) {
-    const steps = Math.floor(dist / STEP_PX);
-    for (let s = 1; s <= steps; s++) {
-      const t = s / steps;
-      stamp(lastX + dx * t, lastY + dy * t);
+    function animateCursor(){
+      cx += (mouseX - cx) * 0.25;
+      cy += (mouseY - cy) * 0.25;
+      cursor.style.left = cx + "px";
+      cursor.style.top = cy + "px";
+      requestAnimationFrame(animateCursor);
     }
-    lastX = x;
-    lastY = y;
-  }
-}
+    animateCursor();
 
-window.addEventListener("mousemove", e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cursorEl.style.transform =
-    `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
 
-  if (isDown) maybeStamp(mouseX, mouseY);
-});
+      // sparkles
+      for (let i = 0; i < 3; i++){
+        const s = document.createElement("div");
+        s.className = "sparkle";
+        s.style.left = (e.clientX + (Math.random() - 0.5) * 18) + "px";
+        s.style.top  = (e.clientY + (Math.random() - 0.5) * 18) + "px";
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 650);
+      }
+    });
 
-window.addEventListener("mousedown", e => {
-  if (e.button !== 0) return;
-  isDown = true;
-  lastX = null;
-  lastY = null;
-});
+    // Switch cursor to hand when hovering links
+    function isLink(el){
+      return el && (el.tagName === "A");
+    }
 
-window.addEventListener("mouseup", () => {
-  isDown = false;
-  lastX = null;
-  lastY = null;
-});
-</script>
+    document.addEventListener("mouseover", (e) => {
+      if (isLink(e.target)){
+        cursor.classList.remove("pencil");
+        cursor.classList.add("hand");
+      }
+    });
+    document.addEventListener("mouseout", (e) => {
+      if (isLink(e.target)){
+        cursor.classList.remove("hand");
+        cursor.classList.add("pencil");
+      }
+    });
 
+    // ==========================
+    // Canvas writing (your text)
+    // ==========================
+    const TEXT_TO_DRAW = `Gianna was seven when she saw her first dead person, and by sixty-two she’d helped thousands enter the realm of the dead. It usually happened like this. A ghost would appear, and she’d say, projecting for dramatics, “Can you see the light?” They’d say something like, “I guess.” Then she’d ignore their ambivalence and gently guide them into the next plane of existence.
+
+Sending someone else’s dearly departed into the light wasn’t difficult, but it was time consuming. She sometimes rushed the process, and the spirit would say, “Oh boy, oh boy, oh boy” before zipping out of this world like a balloon deflating in the air. Like many mediumships, Gianna’s came at the expense of happiness. She’d been ousted from social groups and lost honest work with decent pay to guide often chaotic souls into the afterlife. It was hard to meet new, alive people. Sometimes her family would set her up with men they knew, but most didn’t want to be with a woman who talked to other dead men.
+
+And Gianna had no interest in men anyway. Most of the dead had been folks trying to do their best, but there were some problematic dead people. They were usually relatives. On her forty-eighth birthday, Gianna was making herself a German chocolate cake when her Uncle Russo died. He appeared in her kitchen with wild eyes and sparse hair next to her oven screaming, “I’ll kill you! I’ll kill you and your yapping dog!” Gianna figured he thought she was his wife, her Aunt Mary. So, to shut the man up, she said in her best Aunt Mary voice, “Baking soda dissolves the human soul. You’ll be nothing more than empty space. A waste of lived life, but you leave me no choice, Russo.” She scooped a tablespoon into her bowl. “So, what is it? The light or the soda?”
+
+Uncle Russo was not a smart man. Of course, he chose the light, and she wondered what happened after. Did his soul merge with the pure energy of the Universe? Or did he enter a consciousness incinerator? Was the light a microwave that bubbled his personhood into meals for ultra-dimensional creatures? Or a cervix preparing for life under hospital fluorescents? Being a medium didn’t provide her with answers, nor did it ameliorate her distinct fear of dying. And it was like this for years—until Meara showed up.
+
+Meara was a self-assured sixty-year-old white apparition from Sheboygan and had no idea how she’d ended up in Gianna’s apartment. “Oh, Queens?” she said. “In 2023? Well, I’ll be damned. I think I died in…” She counted with her ephemeral fingers. “Was it 1972?” She told Gianna that she’d been exploring since the day she died. “Breast cancer.” She threw her hands in the air. “Terrible stuff.”
+
+Gianna thought she was beautiful. Desperate for Meara’s attention, she kept the conversation going longer than she had with other specters. “So, where have you been?” she said.
+
+“Oh, here and there and in between, I suppose. I’ve been exploring. I saw Tokyo, those Easter Island heads. Want to know something interesting?” She leaned forward, “I think I can time travel.” She slapped her knee, which swirled like smoke, and laughed. “I probably shouldn’t tell you what I saw in the future, but—” She paused. “Chickens. Huge.” Gianna turned on the kettle. “Oh my,” she said. “And you don’t feel pulled toward anything? No calling? No light?” Meara crossed her arms. “Well, sometimes. But then I keep on keeping on.” Meara had a short gray bob and touched her hair with her fingers. “I can’t tell if I’m feeling my hair, or if I’m feeling a memory of my hair. Can you still see me?”
+
+“I can. Your hair…” Gianna moved closer. “It’s lovely, Meara.”
+
+“Thank you. Sometimes I feel like I’m about to disappear, and then I—Oh, shit.” She was gone.
+
+Gianna waited. She watched daytime TV, and after the sun set, she sat on her balcony overlooking the Brooklyn-Queens Expressway. The cars moved so fast and close together that they seemed to make one large living snake of light. Maybe souls were like that. Maybe, she thought, we’re all just snakes of light moving along faster than we ought to on a celestial highway whose offramps offer only brief respite in a material body. She supposed that being a ghost was the best of both worlds. A bit of living and a lot of ghostly brooding. And who could say that loneliness wasn’t at the end of that damned tunnel of light anyway?
+
+Weeks later, Gianna was boiling pasta when Meara manifested against the window in the kitchen. “Oh, Meara, you’re back.” She reached out to touch her, but her hands moved through her, of course.
+
+“Oh.” She seemed surprised. “I guess I am. Did you miss me?” Meara was smiling.
+
+“Dreadfully.” She wiped her tears. “I was lonely.”
+
+Meara looked down. “The light’s back, Gianna.”
+
+She felt the blood heat her cheeks and then projected her voice like she always had. “Meara, can you see it now?”
+
+“Yes, I can see it.” Gianna squinted. “How strange. It’s a fractal.”
+
+“To hell with the light, Meara. Turn away from the light. Stay with me. Gianna.”
+
+“Well, all you had to do was ask. No need for theatrics.” She floated toward the stove. “What are you making?”
+
+Gianna strained the pasta over the sink. The steam looked like a ghost, and Meara said “boo” to lighten the mood. They went to the couch, Meara with her gray bob and ghostly pallor, and Gianna with her butter pasta.
+
+Guilt swelled inside Gianna on account of having Meara turn away from the light, but who knows what was on the other side. Maybe she saved them both from an endless drive on Death Road or from getting flushed down some god’s golden toilet. Either way, she figured, being alive and alone is far worse than being together somewhere between purgatory and Queens.`;
+
+    const canvas = document.getElementById("drawLayer");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas(){
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(innerWidth * dpr);
+      canvas.height = Math.floor(innerHeight * dpr);
+      canvas.style.width = innerWidth + "px";
+      canvas.style.height = innerHeight + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Neon ink style
+      ctx.font = "16px Inter";
+      ctx.fillStyle = "rgba(57,255,20,0.72)";
+      ctx.shadowColor = "rgba(57,255,20,0.55)";
+      ctx.shadowBlur = 10;
+    }
+    resizeCanvas();
+    addEventListener("resize", resizeCanvas);
+
+    // Writing controls (similar to your example)
+    let writing = false;
+    let lastX = 0, lastY = 0;
+    let charIndex = 0;
+    let distAcc = 0;
+
+    const stepPx = 9; // spacing between characters (smaller = denser)
+    const text = (TEXT_TO_DRAW + "   ").replace(/\s+/g, (m)=> m.includes("\n") ? "\n" : " ");
+
+    function nextChar(){
+      // Keep original newlines by turning them into spaces occasionally
+      const ch = text[charIndex++ % text.length];
+      return ch === "\n" ? " " : ch;
+    }
+
+    addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      writing = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      distAcc = 0;
+    });
+
+    addEventListener("mouseup", () => writing = false);
+    addEventListener("mouseleave", () => writing = false);
+
+    addEventListener("mousemove", (e) => {
+      if (!writing) return;
+
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      const len = Math.hypot(dx, dy);
+      if (!len) return;
+
+      const angle = Math.atan2(dy, dx);
+      let traveled = 0;
+
+      while (distAcc + (len - traveled) >= stepPx){
+        const step = stepPx - distAcc;
+        traveled += step;
+        const t = traveled / len;
+
+        ctx.save();
+        ctx.translate(lastX + dx * t, lastY + dy * t);
+        ctx.rotate(angle);
+
+        ctx.fillText(nextChar(), 0, 0);
+        ctx.restore();
+
+        distAcc = 0;
+      }
+
+      distAcc += (len - traveled);
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+
+    // Press C to clear ink
+    addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "c"){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+    });
+  </script>
 </body>
 </html>
