@@ -14,6 +14,12 @@
 /* =====================
    HEART CURSOR
 ===================== */
+   /* Prevent text selection while drawing */
+body.drawing {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 
 body {
   cursor: url("data:image/svg+xml;utf8,\
@@ -141,10 +147,9 @@ body{
     <a href="#top" class="brand__link">Michelle Hulan</a>
   </div>
 
-  <nav class="nav">
-    <a class="nav__link" href="#top">Home</a>
-    <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
-  </nav>
+<nav class="nav">
+  <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
+</nav>
 </header>
 
 <main>
@@ -264,44 +269,64 @@ const stepPx=9;
 function nextChar(){
   return TEXT_TO_DRAW[idx++%TEXT_TO_DRAW.length];
 }
+// ----------------------------
+// Drawing listeners (no text selection)
+// ----------------------------
 
-addEventListener("mousedown",e=>{
-  writing=true;
-  lastX=e.clientX;
-  lastY=e.clientY;
-  distAcc=0;
+addEventListener("mousedown", (e) => {
+  if (e.button !== 0) return;
+
+  // If clicking a link, let it work normally
+  if (e.target.closest("a")) return;
+
+  writing = true;
+  document.body.classList.add("drawing");
+
+  lastX = e.clientX;
+  lastY = e.clientY;
+  distAcc = 0;
+
+  // Stop browser text selection
+  e.preventDefault();
 });
 
-addEventListener("mouseup",()=>writing=false);
+addEventListener("mouseup", () => {
+  writing = false;
+  document.body.classList.remove("drawing");
+});
 
-addEventListener("mousemove",e=>{
-  if(!writing)return;
+addEventListener("mousemove", (e) => {
+  if (!writing) return;
 
-  const dx=e.clientX-lastX;
-  const dy=e.clientY-lastY;
-  const len=Math.hypot(dx,dy);
-  const angle=Math.atan2(dy,dx);
+  e.preventDefault();
 
-  let traveled=0;
-  while(distAcc+(len-traveled)>=stepPx){
-    const step=stepPx-distAcc;
-    traveled+=step;
-    const t=traveled/len;
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  const len = Math.hypot(dx, dy);
+  if (!len) return;
+
+  const angle = Math.atan2(dy, dx);
+
+  let traveled = 0;
+  while (distAcc + (len - traveled) >= stepPx) {
+    const step = stepPx - distAcc;
+    traveled += step;
+    const t = traveled / len;
 
     ctx.save();
-    ctx.translate(lastX+dx*t,lastY+dy*t);
+    ctx.translate(lastX + dx * t, lastY + dy * t);
     ctx.rotate(angle);
-    ctx.fillText(nextChar(),0,0);
+    ctx.fillText(nextChar(), 0, 0);
     ctx.restore();
 
-    distAcc=0;
+    distAcc = 0;
   }
 
-  distAcc+=len-traveled;
-  lastX=e.clientX;
-  lastY=e.clientY;
+  distAcc += (len - traveled);
+  lastX = e.clientX;
+  lastY = e.clientY;
 });
-</script>
 
-</body>
-</html>
+// Prevent drag-select globally
+addEventListener("dragstart", (e) => e.preventDefault());
+
