@@ -1,135 +1,182 @@
-:root {
-  --max: 980px;
-  --text: #111;
-  --muted: #6b6b6b;
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michelle Hulan</title>
+
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <a href="#top" class="brand__link">Michelle Hulan</a>
+    </div>
+
+    <nav class="nav">
+      <a class="nav__link" href="#top">Home</a>
+      <a class="nav__link" href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
+      <a class="nav__link" href="#creative-writing">Creative Writing</a>
+      <a class="nav__link" href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- Bio -->
+    <section class="section">
+      <h2 class="h2">Bio</h2>
+      <p class="body">
+        Michelle Hulan is a poet and writer. Her work has appeared in
+        <em>the Toronto Journal</em>, <em>HAD</em>, <em>the Citron Review</em>,
+        <em>RHINO</em>, and elsewhere.
+      </p>
+    </section>
+
+    <!-- Selected Work -->
+    <section class="section" id="creative-writing">
+      <h2 class="h2">Selected Work</h2>
+      <ul class="work">
+        <li class="work__item">
+          <a class="work__title"
+             href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/"
+             target="_blank">
+            "The Universe, as in the One Last Song for the Lonely Hearts"
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <h2 class="h2">Contact</h2>
+      <p class="body">
+        Email:
+        <a href="mailto:michellehulan@gmail.com">michellehulan@gmail.com</a>
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Michelle Hulan</small>
+  </footer>
+
+</div>
+
+<!-- Neon cursor + ink -->
+<div id="neon-cursor"></div>
+<div id="ink-layer"></div>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// ==============================
+// ✍️ YOUR POEM GOES HERE
+// ==============================
+
+const POEM_TEXT = `
+PASTE YOUR FULL POEM TEXT HERE.
+This will loop forever as people drag.
+
+Add line breaks.
+They will be preserved.
+`.trim();
+
+// ==============================
+// CURSOR + WRITING ENGINE
+// ==============================
+
+const cursorEl = document.getElementById("neon-cursor");
+const inkLayer = document.getElementById("ink-layer");
+
+let mouseX = 0, mouseY = 0;
+let isDown = false;
+
+const STEP_PX = 14;
+const CHUNK_LEN = 6;
+const MAX_INK = 1400;
+
+let index = 0;
+let lastX = null;
+let lastY = null;
+
+function nextChunk() {
+  const chunk = POEM_TEXT.slice(index, index + CHUNK_LEN);
+  index += CHUNK_LEN;
+  if (index >= POEM_TEXT.length) index = 0;
+  return chunk;
 }
 
-/* Base */
+function stamp(x, y) {
+  const el = document.createElement("span");
+  el.className = "ink";
+  el.textContent = nextChunk();
+  el.style.left = x + "px";
+  el.style.top = y + "px";
+  inkLayer.appendChild(el);
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #f6f6f6;
-  color: var(--text);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.page {
-  max-width: var(--max);
-  margin: 0 auto;
-  padding: 32px;
-}
-
-/* Header */
-
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 60px;
-}
-
-.brand__link {
-  font-size: 40px;
-  font-weight: 700;
-  color: #111;
-  text-decoration: none;
-}
-
-.brand__link:hover {
-  text-decoration: none;
-}
-
-.nav {
-  display: flex;
-  gap: 22px;
-}
-
-.nav__link {
-  font-size: 14px;
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.nav__link:hover {
-  text-decoration: underline;
-}
-
-/* Sections */
-
-.section {
-  margin-bottom: 48px;
-}
-
-.h2 {
-  font-size: 28px;
-  margin-bottom: 18px;
-  font-weight: 700;
-}
-
-@media (min-width: 900px) {
-  .h2 {
-    font-size: 32px;
+  while (inkLayer.children.length > MAX_INK) {
+    inkLayer.removeChild(inkLayer.firstChild);
   }
 }
 
-.body {
-  font-size: 15px;
-  max-width: 70ch;
-}
-
-/* Work List */
-
-.work {
-  list-style: none;
-  padding: 0;
-}
-
-.work__item {
-  margin-bottom: 14px;
-  font-size: 15px;
-}
-
-.work__title {
-  color: #111;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.work__title--nolink {
-  text-decoration: none;
-  font-weight: 500;
-  cursor: default;
-}
-
-.work__meta {
-  color: #555;
-}
-
-/* Footer */
-
-.footer {
-  margin-top: 48px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-/* Mobile */
-
-@media (max-width: 640px) {
-  .topbar {
-    flex-direction: column;
-    gap: 20px;
+function maybeStamp(x, y) {
+  if (lastX === null) {
+    lastX = x;
+    lastY = y;
+    stamp(x, y);
+    return;
   }
 
-  .brand__link {
-    font-size: 34px;
+  const dx = x - lastX;
+  const dy = y - lastY;
+  const dist = Math.hypot(dx, dy);
+
+  if (dist > STEP_PX) {
+    const steps = Math.floor(dist / STEP_PX);
+    for (let s = 1; s <= steps; s++) {
+      const t = s / steps;
+      stamp(lastX + dx * t, lastY + dy * t);
+    }
+    lastX = x;
+    lastY = y;
   }
 }
+
+window.addEventListener("mousemove", e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorEl.style.transform =
+    `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+
+  if (isDown) maybeStamp(mouseX, mouseY);
+});
+
+window.addEventListener("mousedown", e => {
+  if (e.button !== 0) return;
+  isDown = true;
+  lastX = null;
+  lastY = null;
+});
+
+window.addEventListener("mouseup", () => {
+  isDown = false;
+  lastX = null;
+  lastY = null;
+});
+</script>
+
+</body>
+</html>
