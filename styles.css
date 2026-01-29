@@ -1,0 +1,148 @@
+:root {
+  --max: 980px;
+  --text: #111;
+  --muted: #6b6b6b;
+  --neon: #39ff14;
+}
+
+/* Base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  cursor: none;
+}
+
+body {
+  margin: 0;
+  background: #f6f6f6;
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* Header */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.brand__link {
+  font-size: 40px;
+  font-weight: 700;
+  color: #111;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 22px;
+}
+
+.nav__link {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav__link:hover {
+  text-decoration: underline;
+}
+
+/* Sections */
+
+.section {
+  margin-bottom: 48px;
+}
+
+.h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .h2 {
+    font-size: 32px;
+  }
+}
+
+.body {
+  max-width: 70ch;
+}
+
+/* Work */
+
+.work {
+  list-style: none;
+  padding: 0;
+}
+
+.work__title {
+  text-decoration: underline;
+}
+
+/* Footer */
+
+.footer {
+  margin-top: 48px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ============================
+   NEON CURSOR + POEM INK
+============================ */
+
+#neon-cursor {
+  position: fixed;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--neon);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 18px rgba(57,255,20,0.9),
+    0 0 40px rgba(57,255,20,0.6);
+}
+
+#neon-cursor::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 2px solid rgba(57,255,20,0.6);
+}
+
+#ink-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+.ink {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: pre;
+  color: var(--neon);
+  font-size: 18px;
+  line-height: 1.1;
+  text-shadow:
+    0 0 10px rgba(57,255,20,0.7),
+    0 0 28px rgba(57,255,20,0.5);
+}
