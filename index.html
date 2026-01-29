@@ -1,181 +1,135 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Michelle Hulan</title>
+:root {
+  --max: 980px;
+  --text: #111;
+  --muted: #6b6b6b;
+}
 
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    >
+/* Base */
 
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  <body>
-    <div class="page">
+body {
+  margin: 0;
+  background: #f6f6f6;
+  color: var(--text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
 
-      <!-- Top bar -->
-      <header class="topbar">
-        <div class="brand">
-          <a href="#top" class="brand__link">Michelle Hulan</a>
-        </div>
+.page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 32px;
+}
 
-        <nav class="nav" aria-label="Primary">
-          <a class="nav__link" href="#top">Home</a>
-          <a class="nav__link" href="https://www.linkedin.com/" target="_blank">LinkedIn</a>
-          <a class="nav__link" href="#creative-writing">Creative Writing</a>
-          <a class="nav__link" href="#contact">Contact</a>
-        </nav>
-      </header>
+/* Header */
 
-      <main id="top" class="content">
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
 
-        <!-- Bio -->
-        <section class="section">
-          <h2 class="h2">Bio</h2>
-          <p class="body">
-            Michelle Hulan is a poet and writer. Her work has appeared in <em>the Toronto Journal</em>,
-            <em>HAD</em>, <em>the Citron Review</em>, <em>RHINO</em>, and elsewhere. She received her MA in
-            English from the University of Ottawa and now lives in Brooklyn with her family.
-          </p>
-        </section>
+.brand__link {
+  font-size: 40px;
+  font-weight: 700;
+  color: #111;
+  text-decoration: none;
+}
 
-        <!-- Selected Work -->
-        <section class="section" id="creative-writing">
-          <h2 class="h2">Selected Work</h2>
+.brand__link:hover {
+  text-decoration: none;
+}
 
-          <ul class="work">
+.nav {
+  display: flex;
+  gap: 22px;
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://www.vol1brooklyn.com/2025/12/07/sunday-stories-rats/"
-                 target="_blank">
-                "Rats!"
-              </a>
-              <span class="work__meta"> Vol. 1 Brooklyn, <em>Forthcoming</em></span>
-            </li>
+.nav__link {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://torontojournal.com/issue5-time-trade/"
-                 target="_blank">
-                "Time Trade."
-              </a>
-              <span class="work__meta"> <em>Toronto Journal</em>, Issue 5, Winter 2025</span>
-            </li>
+.nav__link:hover {
+  text-decoration: underline;
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://citronreview.com/2023/06/30/meara-can-you-see-the-light/"
-                 target="_blank">
-                "Meara, Can You See the Light?"
-              </a>
-              <span class="work__meta">
-                <em>The Citron Review</em>, Summer 2023 (Best of the Net 2023 Nominee)
-              </span>
-            </li>
+/* Sections */
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://www.litmagazine.org/when-i-was-young-my-future/"
-                 target="_blank">
-                "When I was Young, My Future,"
-              </a>
-              <span class="work__meta"> <em>LIT Magazine</em>, Fall 2023</span>
-            </li>
+.section {
+  margin-bottom: 48px;
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://www.havehashad.com/hadposts/hunger"
-                 target="_blank">
-                "Hunger,"
-              </a>
-              <span class="work__meta"> <em>HAD</em>, March 2023</span>
-            </li>
+.h2 {
+  font-size: 28px;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
 
-            <!-- NO LINK -->
-            <li class="work__item">
-              <span class="work__title work__title--nolink">
-                "Aubade in Which the Light Speaks,"
-              </span>
-              <span class="work__meta"> <em>RHINO</em>, Summer 2023 (Print)</span>
-            </li>
+@media (min-width: 900px) {
+  .h2 {
+    font-size: 32px;
+  }
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://sundoglit.com/Michelle-Hulan/"
-                 target="_blank">
-                "Moon I Can't Touch,"
-              </a>
-              <span class="work__meta"> <em>Sundog Lit</em>, Issue 21, 2022</span>
-            </li>
+.body {
+  font-size: 15px;
+  max-width: 70ch;
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://fivesouth.net/hulan-i-was-not-a-tender-lover/"
-                 target="_blank">
-                "I Was Not a Tender Lover,"
-              </a>
-              <span class="work__meta">
-                <em>Five South</em>, Fall 2022 (Best of the Net 2023 Nominee)
-              </span>
-            </li>
+/* Work List */
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/"
-                 target="_blank">
-                "The Universe, as in the One Last Song for the Lonely Hearts,"
-              </a>
-              <span class="work__meta"> <em>Chestnut Review</em>, Summer 2022</span>
-            </li>
+.work {
+  list-style: none;
+  padding: 0;
+}
 
-            <!-- NO LINK -->
-            <li class="work__item">
-              <span class="work__title work__title--nolink">
-                "I Contemplate Our Cage &amp; Get Left Behind,"
-              </span>
-              <span class="work__meta"> <em>Poet Lore</em>, Spring 2022 (Print)</span>
-            </li>
+.work__item {
+  margin-bottom: 14px;
+  font-size: 15px;
+}
 
-            <li class="work__item">
-              <a class="work__title"
-                 href="https://mudseasonreview.com/2021/02/poetry-issue-54/"
-                 target="_blank">
-                "Sonnet for Fat Purple Figs"
-              </a>
-              <span class="work__meta">
-                <em>Mud Season Review</em>, Issue 54, 2020
-              </span>
-            </li>
+.work__title {
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-          </ul>
-        </section>
+.work__title--nolink {
+  text-decoration: none;
+  font-weight: 500;
+  cursor: default;
+}
 
-        <!-- Contact -->
-        <section class="section" id="contact">
-          <h2 class="h2">Contact</h2>
-          <p class="body">
-            Email:
-            <a href="mailto:michellehulan@gmail.com">michellehulan@gmail.com</a>
-          </p>
-        </section>
+.work__meta {
+  color: #555;
+}
 
-      </main>
+/* Footer */
 
-      <footer class="footer">
-        <small>© <span id="year"></span> Michelle Hulan</small>
-      </footer>
+.footer {
+  margin-top: 48px;
+  font-size: 12px;
+  color: var(--muted);
+}
 
-    </div>
+/* Mobile */
 
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-  </body>
-</html>
+@media (max-width: 640px) {
+  .topbar {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .brand__link {
+    font-size: 34px;
+  }
+}
