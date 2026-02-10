@@ -34,6 +34,17 @@
       overflow-x: hidden;
     }
 
+    /* Style for your Resume Link */
+    .body a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .body a:hover {
+      color: #000;
+    }
+
     .page {
       max-width: var(--max);
       margin: 0 auto;
@@ -139,13 +150,17 @@
       </nav>
     </header>
 
-<p>
-  I'm still in the process of migrating my portfolio from Squarespace to Github. 
-  In the meantime, please enjoy this game.
-  <a href="Michelle%20Hulan%20-%20Resume.docx" download="MichelleHulan_Resume.docx">
-    You can also download my resume.
-  </a>
-</p>
+    <main>
+      <h2 class="h2">Instructional Design Portfolio</h2>
+      <div class="body">
+        <p>
+          I'm still in the process of migrating my portfolio from Squarespace to Github. 
+          In the meantime, please enjoy this game.
+          <a href="Michelle%20Hulan%20-%20Resume.docx" download="MichelleHulan_Resume.docx">
+            You can also download my resume.
+          </a>
+        </p>
+      </div>
 
       <div id="game-container" onclick="jump()">
         <div id="score">00000</div>
@@ -155,7 +170,7 @@
     </main>
 
     <footer style="margin-top: 48px; font-size: 12px; color: var(--muted);">
-      &copy; 2026 Michelle Hulan
+      &copy; 2025 Michelle Hulan
     </footer>
   </div>
 
@@ -163,11 +178,18 @@
     const pom = document.getElementById("pomeranian");
     const container = document.getElementById("game-container");
     const scoreElement = document.getElementById("score");
+    
     let score = 0;
     let isJumping = false;
     let gameActive = true;
+    let gameOver = false;
 
     function jump() {
+      if (gameOver) {
+        restartGame();
+        return;
+      }
+      
       if (isJumping || !gameActive) return;
       isJumping = true;
       pom.classList.add("jump");
@@ -175,6 +197,10 @@
         pom.classList.remove("jump");
         isJumping = false;
       }, 500);
+    }
+
+    function restartGame() {
+      location.reload();
     }
 
     document.addEventListener("keydown", (e) => {
@@ -185,14 +211,12 @@
     });
 
     function createBlock() {
-      if (!gameActive) return;
+      if (!gameActive || gameOver) return;
       
       const block = document.createElement("div");
       block.classList.add("block");
-      
       const heights = [30, 50, 60];
       block.style.height = heights[Math.floor(Math.random() * heights.length)] + "px";
-      
       container.appendChild(block);
 
       let position = -50;
@@ -223,8 +247,8 @@
           blockRect.top < pomRect.bottom - 2
         ) {
           gameActive = false;
-          alert("GAME OVER\nScore: " + score);
-          location.reload(); 
+          gameOver = true;
+          document.querySelector(".instructions").innerHTML = "<b>GAME OVER!</b> Press Space to try again.";
         }
       }, 20);
 
