@@ -13,7 +13,7 @@
 
   <style>
     /* =====================
-       PAGE STYLES (Matching Home)
+       PAGE STYLES
     ===================== */
     :root {
       --max: 980px;
@@ -32,17 +32,6 @@
       font-size: 15px;
       line-height: 1.65;
       overflow-x: hidden;
-    }
-
-    /* Style for your Resume Link */
-    .body a {
-      color: var(--text);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .body a:hover {
-      color: #000;
     }
 
     .page {
@@ -73,6 +62,24 @@
     }
     .nav__link:hover { text-decoration: underline; }
 
+    /* Case Study Content Styles */
+    .content-section { margin-bottom: 60px; }
+    .h2 { font-size: 32px; font-weight: 700; margin-bottom: 24px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+    .h3 { font-size: 22px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
+    .case-study { margin-bottom: 48px; background: white; padding: 32px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .case-study h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #333; }
+    .case-study p { margin-bottom: 16px; color: #444; }
+    .case-study ul { margin-bottom: 16px; padding-left: 20px; }
+    .case-study li { margin-bottom: 8px; }
+    .outcome { font-weight: 600; color: #2e7d32; }
+
+    .resume-link {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 600;
+    }
+
     /* =====================
        GAME AREA STYLES
     ===================== */
@@ -99,40 +106,15 @@
       animation: roll 0.4s infinite linear;
     }
 
-    @keyframes roll {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
+    .game-paused #pomeranian { animation-play-state: paused; }
 
-    .jump { 
-      animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1) !important; 
-    }
+    @keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .jump { animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1) !important; }
+    @keyframes jump { 0% { bottom: 0; } 50% { bottom: 100px; } 100% { bottom: 0; } }
 
-    @keyframes jump {
-      0% { bottom: 0; }
-      50% { bottom: 100px; }
-      100% { bottom: 0; }
-    }
-
-    .block {
-      position: absolute;
-      bottom: 0;
-      right: -50px;
-      width: 25px;
-      background: #535353;
-    }
-
-    #score {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      color: #535353;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 20px;
-    }
-
+    .block { position: absolute; bottom: 0; right: -50px; width: 25px; background: #535353; }
+    #score { position: absolute; top: 10px; right: 20px; color: #535353; font-family: 'Courier New', monospace; font-size: 20px; }
     .instructions { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
-    .h2 { font-size: 28px; font-weight: 700; margin-bottom: 18px; }
 
   </style>
 </head>
@@ -140,9 +122,7 @@
 
   <div class="page">
     <header class="topbar">
-      <div class="brand">
-        <a href="/" class="brand__link">Michelle Hulan</a>
-      </div>
+      <div class="brand"><a href="/" class="brand__link">Michelle Hulan</a></div>
       <nav class="nav">
         <a class="nav__link" href="/">Home</a>
         <a class="nav__link" href="instructionaldesign.html">Instructional Design</a>
@@ -151,22 +131,47 @@
     </header>
 
     <main>
-      <h2 class="h2">Instructional Design Portfolio</h2>
-      <div class="body">
-        <p>
-          I'm still in the process of migrating my portfolio from Squarespace to Github. 
-          In the meantime, please enjoy this game.
-          <a href="Michelle%20Hulan%20-%20Resume.docx" download="MichelleHulan_Resume.docx">
-            You can also download my resume.
-          </a>
-        </p>
-      </div>
+      <section class="content-section">
+        <h2 class="h2">Hi, I’m Michelle.</h2>
+        <p>I’m a Senior Learning Experience Designer specializing in user adoption and in‑app learning experiences. Over the last six years, I’ve designed NYC policy and compliance training, built scalable learning resources, and created in‑app guidance that accelerates adoption and reduces user friction. Most recently, I’ve focused on Digital Adoption using WalkMe—partnering closely with IT developers to streamline workflows, reduce errors, and improve real‑time user experience in Salesforce.</p>
 
-      <div id="game-container" onclick="jump()">
-        <div id="score">00000</div>
-        <div id="pomeranian"></div>
-      </div>
-      <p class="instructions">Press <b>Space</b> or Click to jump the blocks!</p>
+        <h3 class="h3">Digital Adoption Case Studies</h3>
+        <p>These case studies highlight measurable results from my work, including reducing errors, increasing adoption, and accelerating delivery.</p>
+
+        <div class="case-study">
+          <h4>Prevented a $1M Billing Error</h4>
+          <p><strong>Problem:</strong> A coordination team uncovered that a $1M rebill occurred when a user resubmitted an outdated rate sheet. Salesforce had no guardrails to prevent this.</p>
+          <p><strong>Solution:</strong> Built an invisible launcher to detect outdated dates and configured a high-visibility blocking warning.</p>
+          <p class="outcome">Outcome: Stopped high-risk billing errors before they reached Finance.</p>
+        </div>
+
+        <div class="case-study">
+          <h4>Reduced IT Backlog & Quick Insights</h4>
+          <p><strong>Problem:</strong> Recruiters needed a quick way to assess candidate engagement in Salesforce. A Dev backlog item requested a color-coded indicator.</p>
+          <p><strong>Solution:</strong> Partnered with the Product Owner to remove the item from Dev backlog. Designed WalkMe launchers that display color-coded levels dynamically.</p>
+          <p class="outcome">Outcome: Delivered a production-ready solution in under 36 hours.</p>
+        </div>
+
+        <div class="case-study">
+          <h4>Emergency UI Removal in Salesforce</h4>
+          <p><strong>Problem:</strong> Salesforce legacy “Send List Email” option was creating unnecessary work and workflow errors.</p>
+          <p><strong>Solution:</strong> Applied WalkMe custom CSS to hide the option for Account Managers.</p>
+          <p class="outcome">Outcome: Achieved a fast fix without requiring Dev resources.</p>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2 class="h2">Instructional Design Samples</h2>
+        <p>I'm still in the process of migrating my samples from Squarespace. In the meantime, please enjoy this game. 
+           <a href="Michelle%20Hulan%20-%20Resume.docx" class="resume-link" download="MichelleHulan_Resume.docx">Download my resume.</a>
+        </p>
+
+        <div id="game-container" onclick="jump()">
+          <div id="score">00000</div>
+          <div id="pomeranian"></div>
+        </div>
+        <p class="instructions">Press <b>Space</b> or Click to jump the blocks!</p>
+      </section>
     </main>
 
     <footer style="margin-top: 48px; font-size: 12px; color: var(--muted);">
@@ -178,41 +183,20 @@
     const pom = document.getElementById("pomeranian");
     const container = document.getElementById("game-container");
     const scoreElement = document.getElementById("score");
-    
-    let score = 0;
-    let isJumping = false;
-    let gameActive = true;
-    let gameOver = false;
+    let score = 0, isJumping = false, gameActive = true, gameOver = false;
 
     function jump() {
-      if (gameOver) {
-        restartGame();
-        return;
-      }
-      
+      if (gameOver) { location.reload(); return; }
       if (isJumping || !gameActive) return;
       isJumping = true;
       pom.classList.add("jump");
-      setTimeout(() => {
-        pom.classList.remove("jump");
-        isJumping = false;
-      }, 500);
+      setTimeout(() => { pom.classList.remove("jump"); isJumping = false; }, 500);
     }
 
-    function restartGame() {
-      location.reload();
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        jump();
-      }
-    });
+    document.addEventListener("keydown", (e) => { if (e.code === "Space") { e.preventDefault(); jump(); } });
 
     function createBlock() {
       if (!gameActive || gameOver) return;
-      
       const block = document.createElement("div");
       block.classList.add("block");
       const heights = [30, 50, 60];
@@ -221,40 +205,25 @@
 
       let position = -50;
       let moveInterval = setInterval(() => {
-        if (!gameActive) {
-          clearInterval(moveInterval);
-          return;
-        }
-
+        if (!gameActive) { clearInterval(moveInterval); return; }
         if (position > container.offsetWidth) {
           clearInterval(moveInterval);
           if (container.contains(block)) {
-              container.removeChild(block);
-              score += 10;
-              scoreElement.innerText = score.toString().padStart(5, '0');
+            container.removeChild(block);
+            score += 10;
+            scoreElement.innerText = score.toString().padStart(5, '0');
           }
-        } else {
-          position += 7;
-          block.style.right = position + "px";
-        }
+        } else { position += 7; block.style.right = position + "px"; }
 
-        const pomRect = pom.getBoundingClientRect();
-        const blockRect = block.getBoundingClientRect();
-
-        if (
-          blockRect.left < pomRect.right - 5 &&
-          blockRect.right > pomRect.left + 5 &&
-          blockRect.top < pomRect.bottom - 2
-        ) {
-          gameActive = false;
-          gameOver = true;
-          document.querySelector(".instructions").innerHTML = "<b>GAME OVER!</b> Press Space to try again.";
+        const pomRect = pom.getBoundingClientRect(), blockRect = block.getBoundingClientRect();
+        if (blockRect.left < pomRect.right - 5 && blockRect.right > pomRect.left + 5 && blockRect.top < pomRect.bottom - 2) {
+          gameActive = false; gameOver = true;
+          container.classList.add("game-paused");
+          document.querySelector(".instructions").innerHTML = "<b style='color: #d32f2f;'>GAME OVER!</b> Press Space to try again.";
         }
       }, 20);
-
-      setTimeout(createBlock, Math.random() * 1000 + 800);
+      setTimeout(() => { if (!gameOver) createBlock(); }, Math.random() * 1000 + 800);
     }
-
     createBlock();
   </script>
 </body>
