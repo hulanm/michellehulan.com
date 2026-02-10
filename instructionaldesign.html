@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instructional Design | Michelle Hulan</title>
   <style>
-    /* Keeps the same look as your homepage */
     :root { --max: 1100px; --muted: #666; }
     * { box-sizing: border-box; }
     body {
@@ -14,23 +13,67 @@
       line-height: 1.5;
       background: #fdfdfd;
       color: #111;
+      overflow-x: hidden;
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='fill:black'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") 12 12, auto;
     }
     .page { max-width: var(--max); margin: 0 auto; padding: 32px; }
-    .topbar { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 60px; }
+    .topbar { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; }
     .brand__link { font-size: 40px; font-weight: 700; color: #111; text-decoration: none; }
     .nav { display: flex; gap: 22px; }
     .nav__link { font-size: 14px; color: var(--muted); text-decoration: none; }
     .nav__link:hover { text-decoration: underline; }
-    .h2 { font-size: 28px; font-weight: 700; margin-bottom: 18px; }
+    
+    /* Game Container - Updated to Black/White */
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 20px;
+      border: 2px solid #111;
+    }
+    #pomeranian {
+      position: absolute;
+      bottom: 0;
+      left: 50px;
+      font-size: 40px;
+      line-height: 1;
+      transition: transform 0.1s;
+    }
+    .hoop {
+      position: absolute;
+      bottom: 0;
+      right: -50px;
+      width: 50px;
+      height: 90px;
+      border: 4px solid #111;
+      border-radius: 50%;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #111;
+      font-family: monospace;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .jump { animation: jump 0.5s linear; }
+    @keyframes jump {
+      0% { bottom: 0; }
+      30% { bottom: 120px; }
+      70% { bottom: 120px; }
+      100% { bottom: 0; }
+    }
+    .instructions { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
   </style>
 </head>
 <body>
   <div class="page">
     <header class="topbar">
-      <div class="brand">
-        <a class="brand__link" href="/">Michelle Hulan</a>
-      </div>
+      <div class="brand"><a class="brand__link" href="/">Michelle Hulan</a></div>
       <nav class="nav">
         <a class="nav__link" href="/">Home</a>
         <a class="nav__link" href="instructionaldesign.html">Instructional Design</a>
@@ -39,13 +82,87 @@
     </header>
 
     <main>
-      <h2 class="h2">Instructional Design Portfolio</h2>
+      <h2 style="font-size: 28px; font-weight: 700;">Instructional Design Portfolio</h2>
       <p>Coming Soon...</p>
+
+      <div id="game-container" onclick="jump()">
+        <div id="score">0</div>
+        <div id="pomeranian">🐕</div>
+      </div>
+      <p class="instructions">Press <b>Space</b> or Click to jump!</p>
     </main>
 
     <footer style="margin-top: 48px; font-size: 12px; color: var(--muted);">
       &copy; 2025 Michelle Hulan
     </footer>
   </div>
+
+  <script>
+    const pom = document.getElementById("pomeranian");
+    const container = document.getElementById("game-container");
+    const scoreElement = document.getElementById("score");
+    let score = 0;
+    let isJumping = false;
+
+    function jump() {
+      if (isJumping) return;
+      isJumping = true;
+      pom.classList.add("jump");
+      setTimeout(() => {
+        pom.classList.remove("jump");
+        isJumping = false;
+      }, 500);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault(); // Stop page from scrolling
+        jump();
+      }
+    });
+
+    function createHoop() {
+      const hoop = document.createElement("div");
+      hoop.classList.add("hoop");
+      container.appendChild(hoop);
+
+      let position = -50;
+      let moveInterval = setInterval(() => {
+        if (position > container.offsetWidth) {
+          clearInterval(moveInterval);
+          if (container.contains(hoop)) {
+              container.removeChild(hoop);
+              score++;
+              scoreElement.innerText = score;
+          }
+        } else {
+          position += 6;
+          hoop.style.right = position + "px";
+        }
+
+        // Improved Collision Detection
+        const pomRect = pom.getBoundingClientRect();
+        const hoopRect = hoop.getBoundingClientRect();
+
+        if (
+          hoopRect.left < pomRect.right &&
+          hoopRect.right > pomRect.left &&
+          hoopRect.top < pomRect.bottom &&
+          !isJumping
+        ) {
+          alert("Game Over! Your Score: " + score);
+          score = 0;
+          scoreElement.innerText = score;
+          clearInterval(moveInterval);
+          if (container.contains(hoop)) container.removeChild(hoop);
+        }
+      }, 20);
+
+      // Randomize next hoop timing
+      setTimeout(createHoop, Math.random() * 1500 + 1000);
+    }
+
+    createHoop();
+  </script>
 </body>
 </html>
