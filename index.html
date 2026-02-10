@@ -16,6 +16,7 @@
       line-height: 1.5;
       background: #fdfdfd;
       color: #111;
+      /* Restored Custom Heart Cursor */
       cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='fill:black'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") 12 12, auto;
     }
     .page {
@@ -34,6 +35,10 @@
       font-weight: 700;
       color: #111;
       text-decoration: none;
+    }
+    /* Restored Green Heart Hover Effect */
+    .brand__link:hover::after {
+      content: " 💚";
     }
     .nav {
       display: flex;
@@ -73,7 +78,7 @@
     <main>
       <section class="section">
         <div class="body">
-          Michelle Hulan is a writer and designer based in Brooklyn, NY. 
+          Michelle Hulan is a writer and designer based in Brooklyn, NY. Her work has appeared or is forthcoming in <i>Sixth Finch</i>, <i>Vol. 1 Brooklyn</i>, <i>The Offing</i>, <i>The Adroit Journal</i>, and elsewhere. She is the recipient of a 2024 Brooklyn Poets Fellowship.
         </div>
       </section>
 
@@ -87,6 +92,14 @@
           <li class="work__item">
             <a class="work__title" href="#" target="_blank">Aubade in which the light speaks</a>
             <span class="work__meta">in <i>Sixth Finch</i>, Forthcoming</span>
+          </li>
+          <li class="work__item">
+            <a class="work__title" href="#" target="_blank">Two Poems</a>
+            <span class="work__meta">in <i>The Offing</i></span>
+          </li>
+          <li class="work__item">
+            <a class="work__title" href="#" target="_blank">Three Poems</a>
+            <span class="work__meta">in <i>The Adroit Journal</i></span>
           </li>
         </ul>
       </section>
