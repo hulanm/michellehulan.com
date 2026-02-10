@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Michelle Hulan</title>
 
-<!-- Inter font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +12,7 @@
 <style>
 
 /* =====================
-   HEART CURSOR
+    CURSOR
 ===================== */
 
 body {
@@ -85,6 +84,11 @@ body{
   text-decoration:none;
 }
 
+/* Green  Hover Effect */
+.brand__link:hover::after {
+  content: " 💚";
+}
+
 .nav{
   display:flex;
   gap:22px;
@@ -139,18 +143,20 @@ body{
 </style>
 </head>
 
-<body>
+<body id="top">
 
 <canvas id="drawLayer"></canvas>
 
-<div class="page" id="top">
+<div class="page">
 
 <header class="topbar">
   <div class="brand">
-    <a href="#top" class="brand__link">Michelle Hulan</a>
+    <a href="/" class="brand__link">Michelle Hulan</a>
   </div>
 
 <nav class="nav">
+  <a class="nav__link" href="/">Home</a>
+  <a class="nav__link" href="instructionaldesign.html">Instructional Design</a>
   <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
 </nav>
 </header>
@@ -162,7 +168,6 @@ body{
   <p class="body">
     Michelle Hulan is a poet and writer. Her work has appeared in
     <em>the Toronto Journal</em>, <em>HAD</em>, <em>the Citron Review</em>,
-    <em>RHINO</em>, and elsewhere. She received her MA in English from the University of Ottawa and now lives in Brooklyn with her family, where she can found knitting.
     <em>RHINO</em>, and elsewhere. She received her MA in English from the University of Ottawa and now lives in Brooklyn with her family, where she can be found knitting.
   </p>
 </section>
@@ -174,7 +179,7 @@ body{
 
 <li class="work__item">
 <a class="work__title" href="https://www.vol1brooklyn.com/2025/12/07/sunday-stories-rats/" target="_blank">"Rats!"</a>
-<span class="work__meta"> Vol. 1 Brooklyn, <em>Winter 2025</em></span>
+<span class="work__meta"> <em>Vol. 1 Brooklyn</em>, Winter 2025</span>
 </li>
 
 <li class="work__item">
@@ -213,7 +218,7 @@ body{
 </li>
 
 <li class="work__item">
-<a class="work__title" href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/" target="_blank">"The Universe, as in the One Last Song for the Lonely Hearts,"</a>
+<a class="work__title" href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-s/" target="_blank">"The Universe, as in the One Last Song for the Lonely s,"</a>
 <span class="work__meta"><em>Chestnut Review</em>, Summer 2022</span>
 </li>
 
