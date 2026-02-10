@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instructional Design | Michelle Hulan</title>
+  
+  <link rel="stylesheet" href="styles.css">
+
   <style>
     :root { --max: 1100px; --muted: #666; }
     * { box-sizing: border-box; }
@@ -34,37 +37,38 @@
       margin-top: 20px;
     }
     
-/* Stick Figure Runner */
+    /* Stick Figure turned into a Ball */
     #pomeranian {
       position: absolute;
       bottom: 0;
       left: 50px;
       width: 40px;
-      height: 60px;
-      /* Color matches your border-bottom: #535353 */
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 60' fill='none' stroke='%23535353' stroke-width='3' stroke-linecap='round'><circle cx='20' cy='10' r='6'/><path d='M20 16v18m0-12l-10 8m10-8l10-4M20 34l-8 12m8-12l10 10'/></svg>");
+      height: 40px;
+      /* Updated SVG to a solid Ball */
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='%23535353'/></svg>");
       background-repeat: no-repeat;
       background-position: bottom;
-      /* Running animation */
-      animation: run 0.2s infinite alternate;
+      /* Rolling animation replaces bobbing run */
+      animation: roll 0.4s infinite linear;
     }
 
-    /* Run Animation (bobbing slightly) */
-    @keyframes run {
-      from { transform: translateY(0); }
-      to { transform: translateY(-3px); }
+    /* Roll Animation */
+    @keyframes roll {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* Jump Animation (Overrides run when active) */
+    /* Jump Animation (Overrides roll when active) */
     .jump { 
       animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1) !important; 
     }
 
     @keyframes jump {
-      0% { bottom: 0; transform: rotate(0deg); }
-      50% { bottom: 100px; transform: rotate(-10deg); }
-      100% { bottom: 0; transform: rotate(0deg); }
+      0% { bottom: 0; }
+      50% { bottom: 100px; }
+      100% { bottom: 0; }
     }
+
     /* Pixel Obstacle Blocks */
     .block {
       position: absolute;
@@ -83,12 +87,6 @@
       font-size: 20px;
     }
 
-    .jump { animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1); }
-    @keyframes jump {
-      0% { bottom: 0; }
-      50% { bottom: 100px; }
-      100% { bottom: 0; }
-    }
     .instructions { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
   </style>
 </head>
@@ -178,11 +176,11 @@
         const pomRect = pom.getBoundingClientRect();
         const blockRect = block.getBoundingClientRect();
 
-        // Dino-style hitbox detection
+        // Hitbox detection
         if (
-          blockRect.left < pomRect.right - 10 &&
-          blockRect.right > pomRect.left + 10 &&
-          blockRect.top < pomRect.bottom - 5
+          blockRect.left < pomRect.right - 5 &&
+          blockRect.right > pomRect.left + 5 &&
+          blockRect.top < pomRect.bottom - 2
         ) {
           gameActive = false;
           alert("GAME OVER\nScore: " + score);
