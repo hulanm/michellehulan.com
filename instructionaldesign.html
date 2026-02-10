@@ -23,48 +23,50 @@
     .nav__link { font-size: 14px; color: var(--muted); text-decoration: none; }
     .nav__link:hover { text-decoration: underline; }
     
-    /* Game Container - Updated to Black/White */
+    /* Game Area */
     #game-container {
       position: relative;
       width: 100%;
       height: 200px;
       background: #fff;
-      border-radius: 8px;
+      border-bottom: 2px solid #535353;
       overflow: hidden;
       margin-top: 20px;
-      border: 2px solid #111;
     }
+    
+    /* Pixel Pom (Dino Style) */
     #pomeranian {
       position: absolute;
       bottom: 0;
       left: 50px;
-      font-size: 40px;
-      line-height: 1;
-      transition: transform 0.1s;
+      width: 44px;
+      height: 47px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 47' fill='%23535353'><path d='M20 0h4v4h4v4h4v4h4v4h4v12h-4v4h-4v4h-4v4h-24v-4h-4v-16h4v-4h4v-4h4v-4h4v-4z'/><rect x='30' y='12' width='4' height='4' fill='white'/></svg>");
+      background-repeat: no-repeat;
     }
-    .hoop {
+
+    /* Pixel Obstacle Blocks */
+    .block {
       position: absolute;
       bottom: 0;
       right: -50px;
-      width: 50px;
-      height: 90px;
-      border: 4px solid #111;
-      border-radius: 50%;
+      width: 25px;
+      background: #535353;
     }
+
     #score {
       position: absolute;
       top: 10px;
       right: 20px;
-      color: #111;
-      font-family: monospace;
+      color: #535353;
+      font-family: 'Courier New', Courier, monospace;
       font-size: 20px;
-      font-weight: bold;
     }
-    .jump { animation: jump 0.5s linear; }
+
+    .jump { animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1); }
     @keyframes jump {
       0% { bottom: 0; }
-      30% { bottom: 120px; }
-      70% { bottom: 120px; }
+      50% { bottom: 100px; }
       100% { bottom: 0; }
     }
     .instructions { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
@@ -86,10 +88,10 @@
       <p>Coming Soon...</p>
 
       <div id="game-container" onclick="jump()">
-        <div id="score">0</div>
-        <div id="pomeranian">🐕</div>
+        <div id="score">00000</div>
+        <div id="pomeranian"></div>
       </div>
-      <p class="instructions">Press <b>Space</b> or Click to jump!</p>
+      <p class="instructions">Press <b>Space</b> or Click to jump the blocks!</p>
     </main>
 
     <footer style="margin-top: 48px; font-size: 12px; color: var(--muted);">
@@ -103,9 +105,10 @@
     const scoreElement = document.getElementById("score");
     let score = 0;
     let isJumping = false;
+    let gameActive = true;
 
     function jump() {
-      if (isJumping) return;
+      if (isJumping || !gameActive) return;
       isJumping = true;
       pom.classList.add("jump");
       setTimeout(() => {
@@ -116,53 +119,61 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
-        e.preventDefault(); // Stop page from scrolling
+        e.preventDefault();
         jump();
       }
     });
 
-    function createHoop() {
-      const hoop = document.createElement("div");
-      hoop.classList.add("hoop");
-      container.appendChild(hoop);
+    function createBlock() {
+      if (!gameActive) return;
+      
+      const block = document.createElement("div");
+      block.classList.add("block");
+      
+      // Random height for blocks
+      const heights = [30, 50, 60];
+      block.style.height = heights[Math.floor(Math.random() * heights.length)] + "px";
+      
+      container.appendChild(block);
 
       let position = -50;
       let moveInterval = setInterval(() => {
-        if (position > container.offsetWidth) {
+        if (!gameActive) {
           clearInterval(moveInterval);
-          if (container.contains(hoop)) {
-              container.removeChild(hoop);
-              score++;
-              scoreElement.innerText = score;
-          }
-        } else {
-          position += 6;
-          hoop.style.right = position + "px";
+          return;
         }
 
-        // Improved Collision Detection
-        const pomRect = pom.getBoundingClientRect();
-        const hoopRect = hoop.getBoundingClientRect();
-
-        if (
-          hoopRect.left < pomRect.right &&
-          hoopRect.right > pomRect.left &&
-          hoopRect.top < pomRect.bottom &&
-          !isJumping
-        ) {
-          alert("Game Over! Your Score: " + score);
-          score = 0;
-          scoreElement.innerText = score;
+        if (position > container.offsetWidth) {
           clearInterval(moveInterval);
-          if (container.contains(hoop)) container.removeChild(hoop);
+          if (container.contains(block)) {
+              container.removeChild(block);
+              score += 10;
+              scoreElement.innerText = score.toString().padStart(5, '0');
+          }
+        } else {
+          position += 7;
+          block.style.right = position + "px";
+        }
+
+        const pomRect = pom.getBoundingClientRect();
+        const blockRect = block.getBoundingClientRect();
+
+        // Dino-style hitbox detection
+        if (
+          blockRect.left < pomRect.right - 10 &&
+          blockRect.right > pomRect.left + 10 &&
+          blockRect.top < pomRect.bottom - 5
+        ) {
+          gameActive = false;
+          alert("GAME OVER\nScore: " + score);
+          location.reload(); 
         }
       }, 20);
 
-      // Randomize next hoop timing
-      setTimeout(createHoop, Math.random() * 1500 + 1000);
+      setTimeout(createBlock, Math.random() * 1000 + 800);
     }
 
-    createHoop();
+    createBlock();
   </script>
 </body>
 </html>
