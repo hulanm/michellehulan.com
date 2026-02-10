@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Instructional Design | Michelle Hulan</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
   <style>
     /* =====================
-       PAGE STYLES
+       PAGE STYLES (Matching Home)
     ===================== */
     :root {
       --max: 980px;
       --text: #111;
       --muted: #6b6b6b;
       --bg: #f6f6f6;
+      --card: #ffffff;
+      --shadow: 0 2px 4px rgba(0,0,0,0.05);
+      --accent: #2e7d32;
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       background: var(--bg);
@@ -43,6 +44,7 @@
     .topbar {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 18px;
       margin-bottom: 60px;
     }
@@ -62,25 +64,47 @@
     }
     .nav__link:hover { text-decoration: underline; }
 
-    /* Case Study Content Styles */
-    .content-section { margin-bottom: 60px; }
-    .h2 { font-size: 32px; font-weight: 700; margin-bottom: 24px; 
-    .case-study { margin-bottom: 48px; background: white; padding: 32px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .case-study h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #333; }
-    .case-study p { margin-bottom: 16px; color: #444; }
-    .case-study ul { margin-bottom: 16px; padding-left: 20px; }
-    .case-study li { margin-bottom: 8px; }
-    .outcome { font-weight: 600; color: #2e7d32; }
+    .h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+    }
+    .h3 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 32px 0 12px;
+    }
 
+    .body a,
     .resume-link {
       color: var(--text);
       text-decoration: underline;
       text-underline-offset: 3px;
       font-weight: 600;
     }
+    .content-section { margin-bottom: 60px; }
+
+    .case-study {
+      margin-bottom: 48px;
+      background: var(--card);
+      padding: 32px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+    .case-study h4 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #333;
+    }
+    .case-study p { margin: 0 0 14px; color: #444; }
+    .case-study ul { margin: 0 0 14px; padding-left: 20px; }
+    .case-study li { margin-bottom: 8px; }
+    .outcome { font-weight: 700; color: var(--accent); }
 
     /* =====================
-       GAME AREA STYLES
+       GAME AREA
     ===================== */
     #game-container {
       position: relative;
@@ -91,8 +115,9 @@
       overflow: hidden;
       margin-top: 20px;
       cursor: pointer;
+      user-select: none;
     }
-    
+
     #pomeranian {
       position: absolute;
       bottom: 0;
@@ -105,23 +130,60 @@
       animation: roll 0.4s infinite linear;
     }
 
+    @keyframes roll {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .jump {
+      animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1) !important;
+    }
+
     .game-paused #pomeranian { animation-play-state: paused; }
 
-    @keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .jump { animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1) !important; }
-    @keyframes jump { 0% { bottom: 0; } 50% { bottom: 100px; } 100% { bottom: 0; } }
+    @keyframes jump {
+      0%   { bottom: 0; }
+      50%  { bottom: 100px; }
+      100% { bottom: 0; }
+    }
 
-    .block { position: absolute; bottom: 0; right: -50px; width: 25px; background: #535353; }
-    #score { position: absolute; top: 10px; right: 20px; color: #535353; font-family: 'Courier New', monospace; font-size: 20px; }
-    .instructions { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
+    .block {
+      position: absolute;
+      bottom: 0;
+      right: -50px;
+      width: 25px;
+      background: #535353;
+    }
 
+    #score {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      color: #535353;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 20px;
+    }
+
+    .instructions {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 10px 0 0;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 48px;
+      font-size: 12px;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
-
   <div class="page">
     <header class="topbar">
-      <div class="brand"><a href="/" class="brand__link">Michelle Hulan</a></div>
+      <div class="brand">
+        <a href="/" class="brand__link">Michelle Hulan</a>
+      </div>
       <nav class="nav">
         <a class="nav__link" href="/">Home</a>
         <a class="nav__link" href="instructionaldesign.html">Instructional Design</a>
@@ -129,9 +191,15 @@
       </nav>
     </header>
 
-    <main>
       <section class="content-section">
-        <p>I’m a Senior Learning Experience Designer specializing in user adoption and in‑app learning experiences. Over the last six years, I’ve designed NYC policy and compliance training, built scalable learning resources, and created in‑app guidance that accelerates adoption and reduces user friction. Most recently, I’ve focused on Digital Adoption using WalkMe—partnering closely with IT developers to streamline workflows, reduce errors, and improve real‑time user experience in Salesforce.</p>
+        <h2 class="h2">Hi, I’m Michelle.</h2>
+        <p>
+          I’m a Senior Learning Experience Designer specializing in user adoption and in‑app learning experiences.
+          Over the last six years, I’ve designed NYC policy and compliance training, built scalable learning resources,
+          and created in‑app guidance that accelerates adoption and reduces user friction.
+          Most recently, I’ve focused on Digital Adoption using WalkMe—partnering closely with IT developers to
+          streamline workflows, reduce errors, and improve real‑time user experience in Salesforce.
+        </p>
 
         <h3 class="h3">Digital Adoption Case Studies</h3>
         <p>These case studies highlight measurable results from my work, including reducing errors, increasing adoption, and accelerating delivery.</p>
@@ -139,40 +207,42 @@
         <div class="case-study">
           <h4>Prevented a $1M Billing Error</h4>
           <p><strong>Problem:</strong> A coordination team uncovered that a $1M rebill occurred when a user resubmitted an outdated rate sheet. Salesforce had no guardrails to prevent this.</p>
-          <p><strong>Solution:</strong> Built an invisible launcher to detect outdated dates and configured a high-visibility blocking warning.</p>
-          <p class="outcome">Outcome: Stopped high-risk billing errors before they reached Finance.</p>
+          <p><strong>Solution:</strong> Built an invisible launcher to detect whether the selected date occurs before today and configured a high‑visibility blocking warning that stops the save action and alerts the user before submission. Used WalkMe data to remove the block for edge‑case users who legitimately require this workflow.
+         <p><strong>Outcome:</strong> Stopped high‑risk billing errors before they reached Finance. Increased leadership confidence in WalkMe as a preventative control.</p>
         </div>
 
         <div class="case-study">
-          <h4>Reduced IT Backlog & Quick Insights</h4>
-          <p><strong>Problem:</strong> Recruiters needed a quick way to assess candidate engagement in Salesforce. A Dev backlog item requested a color-coded indicator.</p>
-          <p><strong>Solution:</strong> Partnered with the Product Owner to remove the item from Dev backlog. Designed WalkMe launchers that display color-coded levels dynamically.</p>
-          <p class="outcome">Outcome: Delivered a production-ready solution in under 36 hours.</p>
+          <h4>Reduced IT Backlog & Delivered Quick Insights</h4>
+          <p><strong>Problem:</strong> Recruiters needed a quick way to assess candidate engagement in Salesforce. A Dev backlog item requested a color‑coded indicator on each candidate's page to indicate how often they responded to recruiters.</p>
+          <p><strong>Solution:</strong> Partnered with the Product Owner to remove the item from the Dev backlog. Designed and deployed WalkMe launchers that display color‑coded engagement levels dynamically. 
+          <p><strong>Outcome:</strong> Recruiters can instantly identify high‑engagement candidates. Reduced Dev backlog and freed development capacity. Delivered the end‑to‑end solution within 36 hours.</p>
         </div>
 
         <div class="case-study">
           <h4>Emergency UI Removal in Salesforce</h4>
-          <p><strong>Problem:</strong> Salesforce legacy “Send List Email” option was creating unnecessary work and workflow errors.</p>
-          <p><strong>Solution:</strong> Applied WalkMe custom CSS to hide the option for Account Managers.</p>
-          <p class="outcome">Outcome: Achieved a fast fix without requiring Dev resources.</p>
+          <p><strong>Problem:</strong> Salesforce Lightning still displayed a legacy button, creating unnecessary confusion and risking workflow errors. Users were told not to use the button, but since it was still there, it caused workflows to breath and time lost.</p>
+          <p><strong>Solution:</strong> Applied targeted WalkMe custom CSS to hide the option for Account Managers and tested across multiple contexts to ensure consistency. User could not see the button, therefore users could take the happy path immediately, and the dev team could remove the function as their leisure.</p>
+          <p><strong>Outcome:</strong> Prevented users from initiating outdated processes and reduced cleanup work for Data Steward teams—without consuming Dev resources.</p>
         </div>
       </section>
 
       <section class="content-section">
         <h2 class="h2">Instructional Design Samples</h2>
-        <p>I'm still in the process of migrating my samples from Squarespace. In the meantime, please enjoy this game. 
-           <a href="Michelle%20Hulan%20-%20Resume.docx" class="resume-link" download="MichelleHulan_Resume.docx">Download my resume.</a>
+        <p>
+          I'm still in the process of migrating my samples from Squarespace.
+          <a href="Michelle%20Hulan%20-%20Resume.docx" class="resume-link" download="MichelleHulan_Resume.docx">Download my resume.</a>
         </p>
-
-        <div id="game-container" onclick="jump()">
-          <div id="score">00000</div>
-          <div id="pomeranian"></div>
-        </div>
-        <p class="instructions">Press <b>Space</b> or Click to jump the blocks!</p>
       </section>
+
+      <!-- Single game instance -->
+      <div id="game-container" onclick="jump()">
+        <div id="score">00000</div>
+        <div id="pomeranian"></div>
+      </div>
+      <p class="instructions">Press <b>Space</b> or click to jump the blocks!</p>
     </main>
 
-    <footer style="margin-top: 48px; font-size: 12px; color: var(--muted);">
+    <footer>
       &copy; 2025 Michelle Hulan
     </footer>
   </div>
@@ -181,20 +251,54 @@
     const pom = document.getElementById("pomeranian");
     const container = document.getElementById("game-container");
     const scoreElement = document.getElementById("score");
-    let score = 0, isJumping = false, gameActive = true, gameOver = false;
+    const instructionsEl = document.querySelector(".instructions");
+
+    let score = 0;
+    let isJumping = false;
+    let gameActive = true;
+    let gameOver = false;
 
     function jump() {
-      if (gameOver) { location.reload(); return; }
+      if (gameOver) {
+        restartGame();
+        return;
+      }
       if (isJumping || !gameActive) return;
+
       isJumping = true;
       pom.classList.add("jump");
-      setTimeout(() => { pom.classList.remove("jump"); isJumping = false; }, 500);
+      setTimeout(() => {
+        pom.classList.remove("jump");
+        isJumping = false;
+      }, 500);
     }
 
-    document.addEventListener("keydown", (e) => { if (e.code === "Space") { e.preventDefault(); jump(); } });
+    function restartGame() {
+      // Clear existing blocks
+      document.querySelectorAll("#game-container .block").forEach(b => b.remove());
+
+      // Reset state
+      score = 0;
+      scoreElement.textContent = score.toString().padStart(5, "0");
+      gameActive = true;
+      gameOver = false;
+      container.classList.remove("game-paused");
+      instructionsEl.innerHTML = "Press <b>Space</b> or click to jump the blocks!";
+
+      // Start spawning blocks again
+      createBlock();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        jump();
+      }
+    });
 
     function createBlock() {
       if (!gameActive || gameOver) return;
+
       const block = document.createElement("div");
       block.classList.add("block");
       const heights = [30, 50, 60];
@@ -202,26 +306,54 @@
       container.appendChild(block);
 
       let position = -50;
-      let moveInterval = setInterval(() => {
-        if (!gameActive) { clearInterval(moveInterval); return; }
-        if (position > container.offsetWidth) {
+      const speed = 7; // px / tick
+      const tickMs = 20;
+
+      const moveInterval = setInterval(() => {
+        if (!gameActive) {
+          clearInterval(moveInterval);
+          return;
+        }
+
+        // Move the block from right:-50 to beyond the container width
+        position += speed;
+        block.style.right = position + "px";
+
+        // Score when it exits the container
+        if (position > container.offsetWidth + 50) {
           clearInterval(moveInterval);
           if (container.contains(block)) {
             container.removeChild(block);
             score += 10;
-            scoreElement.innerText = score.toString().padStart(5, '0');
+            scoreElement.textContent = score.toString().padStart(5, "0");
           }
-        } else { position += 7; block.style.right = position + "px"; }
-
-        const pomRect = pom.getBoundingClientRect(), blockRect = block.getBoundingClientRect();
-        if (blockRect.left < pomRect.right - 5 && blockRect.right > pomRect.left + 5 && blockRect.top < pomRect.bottom - 2) {
-          gameActive = false; gameOver = true;
-          container.classList.add("game-paused");
-          document.querySelector(".instructions").innerHTML = "<b style='color: #d32f2f;'>GAME OVER!</b> Press Space to try again.";
+          return;
         }
-      }, 20);
-      setTimeout(() => { if (!gameOver) createBlock(); }, Math.random() * 1000 + 800);
+
+        // Collision detection
+        const pomRect = pom.getBoundingClientRect();
+        const blockRect = block.getBoundingClientRect();
+
+        const overlap =
+          blockRect.left < pomRect.right - 5 &&
+          blockRect.right > pomRect.left + 5 &&
+          blockRect.top < pomRect.bottom - 2;
+
+        if (overlap) {
+          gameActive = false;
+          gameOver = true;
+          container.classList.add("game-paused");
+          instructionsEl.innerHTML = "<b style='color:#d32f2f;'>GAME OVER!</b> Press Space or click to try again.";
+          clearInterval(moveInterval);
+        }
+      }, tickMs);
+
+      // Schedule next block
+      const nextDelay = Math.random() * 1000 + 800; // 800–1800ms
+      setTimeout(() => { if (!gameOver) createBlock(); }, nextDelay);
     }
+
+    // Kick off the first block
     createBlock();
   </script>
 </body>
