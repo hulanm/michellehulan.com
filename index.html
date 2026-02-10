@@ -1,341 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Michelle Hulan</title>
-
-<!-- Inter font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-/* =====================
-   HEART CURSOR
-===================== */
-
-body {
-  cursor: url("data:image/svg+xml;utf8,\
-<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'>\
-<path d='M12 21s-7-4.35-10-9c-2.5-4 1-9 5.5-7 2 .9 3.4 2.7 4.5 4 1.1-1.3 2.5-3.1 4.5-4 4.5-2 8 3 5.5 7-3 4.65-10 9-10 9z' fill='%2339ff14'/>\
-</svg>") 6 6, auto;
-}
-
-/* prevent selection only while drawing */
-body.drawing {
-  user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
-/* =====================
-   SITE STYLES
-===================== */
-
-:root{
-  --max: 980px;
-  --text:#111;
-  --muted:#6b6b6b;
-  --bg:#f6f6f6;
-  --neon:#39ff14;
-}
-
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  font-size:15px;
-  line-height:1.65;
-}
-
-/* Canvas writing layer */
-#drawLayer{
-  position:fixed;
-  inset:0;
-  z-index:1;
-  pointer-events:none;
-}
-
-/* Page content */
-.page{
-  position:relative;
-  z-index:2;
-  max-width:var(--max);
-  margin:0 auto;
-  padding:32px;
-}
-
-/* Header */
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom:60px;
-}
-
-.brand__link{
-  font-size:40px;
-  font-weight:700;
-  color:#111;
-  text-decoration:none;
-}
-
-.nav{
-  display:flex;
-  gap:22px;
-}
-
-.nav__link{
-  font-size:14px;
-  color:var(--muted);
-  text-decoration:none;
-}
-.nav__link:hover{ text-decoration:underline; }
-
-/* Sections */
-.section{ margin-bottom:48px; }
-
-.h2{
-  font-size:28px;
-  font-weight:700;
-  margin-bottom:18px;
-}
-@media(min-width:900px){
-  .h2{font-size:32px;}
-}
-
-.body{ max-width:70ch; color:#333; }
-
-/* Work list */
-.work{ list-style:none; padding:0; margin:0; }
-
-.work__item{ margin-bottom:14px; }
-
-.work__title{
-  color:#111;
-  text-decoration:underline;
-  text-underline-offset:3px;
-}
-
-.work__title--nolink{
-  text-decoration:none;
-  font-weight:500;
-}
-
-.work__meta{ color:#555; }
-
-/* Footer */
-.footer{
-  margin-top:48px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michelle Hulan</title>
+  <style>
+    :root {
+      --max: 1100px;
+      --muted: #666;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      background: #fdfdfd;
+      color: #111;
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' style='fill:black'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") 12 12, auto;
+    }
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 60px;
+    }
+    .brand__link {
+      font-size: 40px;
+      font-weight: 700;
+      color: #111;
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 22px;
+    }
+    .nav__link {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .nav__link:hover {
+      text-decoration: underline;
+    }
+    .section { margin-bottom: 48px; }
+    .h2 { font-size: 28px; font-weight: 700; margin-bottom: 18px; }
+    .body { max-width: 70ch; color: #333; }
+    .work { list-style: none; padding: 0; margin: 0; }
+    .work__item { margin-bottom: 14px; }
+    .work__title { color: #111; text-decoration: underline; text-underline-offset: 3px; }
+    .work__meta { color: #555; }
+    .footer { margin-top: 48px; font-size: 12px; color: var(--muted); }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <a class="brand__link" href="/">Michelle Hulan</a>
+      </div>
+      <nav class="nav">
+        <a class="nav__link" href="/">Home</a>
+        <a class="nav__link" href="instructionaldesign.html">Instructional Design</a>
+        <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
+      </nav>
+    </header>
 
-<canvas id="drawLayer"></canvas>
+    <main>
+      <section class="section">
+        <div class="body">
+          Michelle Hulan is a writer and designer based in Brooklyn, NY. 
+        </div>
+      </section>
 
-<div class="page" id="top">
+      <section class="section">
+        <h2 class="h2">Selected Work</h2>
+        <ul class="work">
+          <li class="work__item">
+            <a class="work__title" href="https://rats.land/" target="_blank">Rats</a>
+            <span class="work__meta">in <i>Vol. 1 Brooklyn</i>, Winter 2025</span>
+          </li>
+          <li class="work__item">
+            <a class="work__title" href="#" target="_blank">Aubade in which the light speaks</a>
+            <span class="work__meta">in <i>Sixth Finch</i>, Forthcoming</span>
+          </li>
+        </ul>
+      </section>
+    </main>
 
-<header class="topbar">
-  <div class="brand">
-    <a href="#top" class="brand__link">Michelle Hulan</a>
+    <footer class="footer">
+      &copy; 2025 Michelle Hulan
+    </footer>
   </div>
-
-<nav class="nav">
-  <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
-</nav>
-</header>
-
-<main>
-
-<section class="section">
-  <h2 class="h2">Bio</h2>
-  <p class="body">
-    Michelle Hulan is a poet and writer. Her work has appeared in
-    <em>the Toronto Journal</em>, <em>HAD</em>, <em>the Citron Review</em>,
-    <em>RHINO</em>, and elsewhere. She received her MA in English from the University of Ottawa and now lives in Brooklyn with her family, where she can be found knitting.
-  </p>
-</section>
-
-<section class="section" id="creative-writing">
-<h2 class="h2">Selected Work</h2>
-
-<ul class="work">
-
-<li class="work__item">
-<a class="work__title" href="https://www.vol1brooklyn.com/2025/12/07/sunday-stories-rats/" target="_blank">"Rats!"</a>
-<span class="work__meta"> Vol. 1 Brooklyn, <em>Winter 2025</em></span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://torontojournal.com/issue5-time-trade/" target="_blank">"Time Trade."</a>
-<span class="work__meta"> <em>Toronto Journal</em>, Issue 5, Winter 2025</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://citronreview.com/2023/06/30/meara-can-you-see-the-light/" target="_blank">"Meara, Can You See the Light?"</a>
-<span class="work__meta"><em>The Citron Review</em>, Summer 2023</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://www.litmagazine.org/when-i-was-young-my-future/" target="_blank">"When I was Young, My Future,"</a>
-<span class="work__meta"><em>LIT Magazine</em>, Fall 2023</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://www.havehashad.com/hadposts/hunger" target="_blank">"Hunger,"</a>
-<span class="work__meta"><em>HAD</em>, March 2023</span>
-</li>
-
-<li class="work__item">
-<span class="work__title--nolink">"Aubade in Which the Light Speaks,"</span>
-<span class="work__meta"><em>RHINO</em>, Summer 2023 (Print)</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://sundoglit.com/Michelle-Hulan/" target="_blank">"Moon I Can't Touch,"</a>
-<span class="work__meta"><em>Sundog Lit</em>, Issue 21, 2022</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://fivesouth.net/hulan-i-was-not-a-tender-lover/" target="_blank">"I Was Not a Tender Lover,"</a>
-<span class="work__meta"><em>Five South</em>, Fall 2022</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/" target="_blank">"The Universe, as in the One Last Song for the Lonely Hearts,"</a>
-<span class="work__meta"><em>Chestnut Review</em>, Summer 2022</span>
-</li>
-
-<li class="work__item">
-<span class="work__title--nolink">"I Contemplate Our Cage &amp; Get Left Behind,"</span>
-<span class="work__meta"><em>Poet Lore</em>, Spring 2022</span>
-</li>
-
-<li class="work__item">
-<a class="work__title" href="https://mudseasonreview.com/2021/02/poetry-issue-54/" target="_blank">"Sonnet for Fat Purple Figs"</a>
-<span class="work__meta"><em>Mud Season Review</em>, Issue 54, 2020</span>
-</li>
-
-</ul>
-</section>
-
-</main>
-
-<footer class="footer">
-© <span id="year"></span> Michelle Hulan
-</footer>
-
-</div>
-
-<script>
-document.getElementById("year").textContent=new Date().getFullYear();
-
-/* =====================
-   CANVAS WRITING
-===================== */
-
-const TEXT_TO_DRAW =
-`Gianna was seven when she saw her first dead person, and by sixty-two she’d helped thousands enter the realm of the dead...`;
-
-const canvas=document.getElementById("drawLayer");
-const ctx=canvas.getContext("2d");
-
-function resizeCanvas(){
-  const dpr=window.devicePixelRatio||1;
-  canvas.width=innerWidth*dpr;
-  canvas.height=innerHeight*dpr;
-  canvas.style.width=innerWidth+"px";
-  canvas.style.height=innerHeight+"px";
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-
-  ctx.font="18px Inter";
-  ctx.fillStyle="rgba(57,255,20,.75)";
-  ctx.shadowColor="rgba(57,255,20,.55)";
-  ctx.shadowBlur=10;
-}
-resizeCanvas();
-addEventListener("resize",resizeCanvas);
-
-let writing=false,lastX=0,lastY=0,idx=0,distAcc=0;
-const stepPx=9;
-
-function nextChar(){
-  return TEXT_TO_DRAW[idx++%TEXT_TO_DRAW.length];
-}
-
-/* ---- FIXED drawing listeners ---- */
-
-addEventListener("selectstart", e=>{
-  if(writing) e.preventDefault();
-});
-
-function onDown(e){
-  if(e.button!==0) return;
-  if(e.target.closest("a")) return;
-
-  writing=true;
-  document.body.classList.add("drawing");
-  lastX=e.clientX;
-  lastY=e.clientY;
-  distAcc=0;
-
-  e.preventDefault();
-}
-
-function onUp(){
-  writing=false;
-  document.body.classList.remove("drawing");
-}
-
-function onMove(e){
-  if(!writing) return;
-
-  e.preventDefault();
-
-  const dx=e.clientX-lastX;
-  const dy=e.clientY-lastY;
-  const len=Math.hypot(dx,dy);
-  if(!len) return;
-
-  const angle=Math.atan2(dy,dx);
-  let traveled=0;
-
-  while(distAcc+(len-traveled)>=stepPx){
-    const step=stepPx-distAcc;
-    traveled+=step;
-    const t=traveled/len;
-
-    ctx.save();
-    ctx.translate(lastX+dx*t,lastY+dy*t);
-    ctx.rotate(angle);
-    ctx.fillText(nextChar(),0,0);
-    ctx.restore();
-
-    distAcc=0;
-  }
-
-  distAcc+=len-traveled;
-  lastX=e.clientX;
-  lastY=e.clientY;
-}
-
-addEventListener("mousedown",onDown,{passive:false});
-addEventListener("mousemove",onMove,{passive:false});
-addEventListener("mouseup",onUp);
-addEventListener("mouseleave",onUp);
-
-addEventListener("dragstart",e=>e.preventDefault());
-</script>
-
 </body>
 </html>
