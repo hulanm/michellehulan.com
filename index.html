@@ -1,1 +1,188 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Michelle Hulan</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>/* =====================   HEART CURSOR===================== */body {  cursor: url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'>\<path d='M12 21s-7-4.35-10-9c-2.5-4 1-9 5.5-7 2 .9 3.4 2.7 4.5 4 1.1-1.3 2.5-3.1 4.5-4 4.5-2 8 3 5.5 7-3 4.65-10 9-10 9z' fill='%2339ff14'/>\</svg>") 6 6, auto;}/* prevent selection only while drawing */body.drawing {  user-select: none;  -webkit-user-select: none;  -ms-user-select: none;}/* =====================   SITE STYLES===================== */:root{  --max: 980px;  --text:#111;  --muted:#6b6b6b;  --bg:#f6f6f6;  --neon:#39ff14;}*{ box-sizing:border-box; }body{  margin:0;  background:var(--bg);  color:var(--text);  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;  font-size:15px;  line-height:1.65;}/* Canvas writing layer */#drawLayer{  position:fixed;  inset:0;  z-index:1;  pointer-events:none;}/* Page content */.page{  position:relative;  z-index:2;  max-width:var(--max);  margin:0 auto;  padding:32px;}/* Header */.topbar{  display:flex;  justify-content:space-between;  gap:18px;  margin-bottom:60px;}.brand__link{  font-size:40px;  font-weight:700;  color:#111;  text-decoration:none;}.nav{  display:flex;  gap:22px;}.nav__link{  font-size:14px;  color:var(--muted);  text-decoration:none;}.nav__link:hover{ text-decoration:underline; }/* Sections */.section{ margin-bottom:48px; }.h2{  font-size:28px;  font-weight:700;  margin-bottom:18px;}@media(min-width:900px){  .h2{font-size:32px;}}.body{ max-width:70ch; color:#333; }/* Work list */.work{ list-style:none; padding:0; margin:0; }.work__item{ margin-bottom:14px; }.work__title{  color:#111;  text-decoration:underline;  text-underline-offset:3px;}.work__title--nolink{  text-decoration:none;  font-weight:500;}.work__meta{ color:#555; }/* Footer */.footer{  margin-top:48px;  font-size:12px;  color:var(--muted);}</style></head><body id="top"><canvas id="drawLayer"></canvas><div class="page"><header class="topbar">  <div class="brand">    <a href="/" class="brand__link">Michelle Hulan</a>  </div><nav class="nav">  <a class="nav__link" href="/">Home</a>  <a class="nav__link" href="instructionaldesign.html">Instructional Design</a>  <a class="nav__link" href="/instructionaldesign/">Instructional Design</a>  <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a></nav></header><main><section class="section">  <h2 class="h2">Bio</h2>  <p class="body">    Michelle Hulan is a poet and writer. Her work has appeared in    <em>the Toronto Journal</em>, <em>HAD</em>, <em>the Citron Review</em>,    <em>RHINO</em>, and elsewhere. She received her MA in English from the University of Ottawa and now lives in Brooklyn with her family, where she can be found knitting.  </p></section><section class="section" id="creative-writing"><h2 class="h2">Selected Work</h2><ul class="work"><li class="work__item"><a class="work__title" href="https://www.vol1brooklyn.com/2025/12/07/sunday-stories-rats/" target="_blank">"Rats!"</a><span class="work__meta"> <em>Vol. 1 Brooklyn</em>, Winter 2025</span></li><li class="work__item"><a class="work__title" href="https://torontojournal.com/issue5-time-trade/" target="_blank">"Time Trade."</a><span class="work__meta"> <em>Toronto Journal</em>, Issue 5, Winter 2025</span></li><li class="work__item"><a class="work__title" href="https://citronreview.com/2023/06/30/meara-can-you-see-the-light/" target="_blank">"Meara, Can You See the Light?"</a><span class="work__meta"><em>The Citron Review</em>, Summer 2023</span></li><li class="work__item"><a class="work__title" href="https://www.litmagazine.org/when-i-was-young-my-future/" target="_blank">"When I was Young, My Future,"</a><span class="work__meta"><em>LIT Magazine</em>, Fall 2023</span></li><li class="work__item"><a class="work__title" href="https://www.havehashad.com/hadposts/hunger" target="_blank">"Hunger,"</a><span class="work__meta"><em>HAD</em>, March 2023</span></li><li class="work__item"><span class="work__title--nolink">"Aubade in Which the Light Speaks,"</span><span class="work__meta"><em>RHINO</em>, Summer 2023 (Print)</span></li><li class="work__item"><a class="work__title" href="https://sundoglit.com/Michelle-Hulan/" target="_blank">"Moon I Can't Touch,"</a><span class="work__meta"><em>Sundog Lit</em>, Issue 21, 2022</span></li><li class="work__item"><a class="work__title" href="https://fivesouth.net/hulan-i-was-not-a-tender-lover/" target="_blank">"I Was Not a Tender Lover,"</a><span class="work__meta"><em>Five South</em>, Fall 2022</span></li><li class="work__item"><a class="work__title" href="https://chestnutreview.com/michelle-hulan-the-universe-as-in-one-last-song-for-the-lonely-hearts/" target="_blank">"The Universe, as in the One Last Song for the Lonely Hearts,"</a><span class="work__meta"><em>Chestnut Review</em>, Summer 2022</span></li><li class="work__item"><span class="work__title--nolink">"I Contemplate Our Cage &amp; Get Left Behind,"</span><span class="work__meta"><em>Poet Lore</em>, Spring 2022</span></li><li class="work__item"><a class="work__title" href="https://mudseasonreview.com/2021/02/poetry-issue-54/" target="_blank">"Sonnet for Fat Purple Figs"</a><span class="work__meta"><em>Mud Season Review</em>, Issue 54, 2020</span></li></ul></section></main><footer class="footer">© <span id="year"></span> Michelle Hulan</footer></div><script>document.getElementById("year").textContent=new Date().getFullYear();/* =====================   CANVAS WRITING===================== */const TEXT_TO_DRAW =`Gianna was seven when she saw her first dead person, and by sixty-two she’d helped thousands enter the realm of the dead...`;const canvas=document.getElementById("drawLayer");const ctx=canvas.getContext("2d");function resizeCanvas(){  const dpr=window.devicePixelRatio||1;  canvas.width=innerWidth*dpr;  canvas.height=innerHeight*dpr;  canvas.style.width=innerWidth+"px";  canvas.style.height=innerHeight+"px";  ctx.setTransform(dpr,0,0,dpr,0,0);  ctx.font="18px Inter";  ctx.fillStyle="rgba(57,255,20,.75)";  ctx.shadowColor="rgba(57,255,20,.55)";  ctx.shadowBlur=10;}resizeCanvas();addEventListener("resize",resizeCanvas);let writing=false,lastX=0,lastY=0,idx=0,distAcc=0;const stepPx=9;function nextChar(){  return TEXT_TO_DRAW[idx++%TEXT_TO_DRAW.length];}/* ---- FIXED drawing listeners ---- */addEventListener("selectstart", e=>{  if(writing) e.preventDefault();});function onDown(e){  if(e.button!==0) return;  if(e.target.closest("a")) return;  writing=true;  document.body.classList.add("drawing");  lastX=e.clientX;  lastY=e.clientY;  distAcc=0;  e.preventDefault();}function onUp(){  writing=false;  document.body.classList.remove("drawing");}function onMove(e){  if(!writing) return;  e.preventDefault();  const dx=e.clientX-lastX;  const dy=e.clientY-lastY;  const len=Math.hypot(dx,dy);  if(!len) return;  const angle=Math.atan2(dy,dx);  let traveled=0;  while(distAcc+(len-traveled)>=stepPx){    const step=stepPx-distAcc;    traveled+=step;    const t=traveled/len;    ctx.save();    ctx.translate(lastX+dx*t,lastY+dy*t);    ctx.rotate(angle);    ctx.fillText(nextChar(),0,0);    ctx.restore();    distAcc=0;  }  distAcc+=len-traveled;  lastX=e.clientX;  lastY=e.clientY;}addEventListener("mousedown",onDown,{passive:false});addEventListener("mousemove",onMove,{passive:false});addEventListener("mouseup",onUp);addEventListener("mouseleave",onUp);addEventListener("dragstart",e=>e.preventDefault());</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instructional Design | Michelle Hulan</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --max: 980px;
+      --text: #111;
+      --muted: #6b6b6b;
+      --bg: #f6f6f6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 32px; }
+
+    .topbar { display: flex; justify-content: space-between; gap: 18px; margin-bottom: 60px; }
+    .brand__link { font-size: 40px; font-weight: 700; color: #111; text-decoration: none; }
+    .nav { display: flex; gap: 22px; }
+    .nav__link { font-size: 14px; color: var(--muted); text-decoration: none; }
+    .nav__link:hover { text-decoration: underline; }
+
+    /* Consistent Heading Styles */
+    .h2 { font-size: 32px; font-weight: 700; margin-top: 40px; margin-bottom: 24px; }
+    .h3 { font-size: 22px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
+
+    .case-study { margin-bottom: 48px; background: white; padding: 32px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .outcome { font-weight: 600; color: #2e7d32; font-style: italic; }
+    .resume-link { color: var(--text); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+
+    /* Game Styles */
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #fff;
+      border-bottom: 2px solid #535353;
+      overflow: hidden;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    #pomeranian {
+      position: absolute;
+      bottom: 0;
+      left: 50px;
+      width: 40px;
+      height: 40px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='%23535353'/></svg>");
+      background-repeat: no-repeat;
+      background-position: bottom;
+      animation: roll 0.4s infinite linear;
+    }
+    .game-paused #pomeranian { animation-play-state: paused; }
+    @keyframes roll { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .jump { animation: jump 0.5s cubic-bezier(0.21, 0.63, 0.36, 1) !important; }
+    @keyframes jump { 0% { bottom: 0; } 50% { bottom: 100px; } 100% { bottom: 0; } }
+    .block { position: absolute; bottom: 0; right: -50px; width: 25px; background: #535353; }
+    #score { position: absolute; top: 10px; right: 20px; color: #535353; font-family: 'Courier New', monospace; font-size: 20px; }
+    .instructions { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand"><a href="/" class="brand__link">Michelle Hulan</a></div>
+      <nav class="nav">
+        <a class="nav__link" href="/">Home</a>
+        <a class="nav__link" href="/instructionaldesign/">Instructional Design</a>
+        <a class="nav__link" href="mailto:michellehulan@gmail.com">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2 class="h2">Hi, I’m Michelle.</h2>
+      <p>I’m a Senior Learning Experience Designer specializing in user adoption and in‑app learning experiences[cite: 1]. Over the last six years, I’ve designed NYC policy and compliance training, built scalable learning resources, and created in‑app guidance[cite: 2]. Most recently, I’ve focused on Digital Adoption using WalkMe—partnering closely with IT developers to streamline workflows[cite: 3].</p>
+
+      <h2 class="h2">Digital Adoption Case Studies</h2>
+      <p>These case studies highlight measurable results from my work, including reducing errors, increasing adoption, and accelerating delivery[cite: 4].</p>
+
+      <div class="case-study">
+        <h3 class="h3">Prevented a $1M Billing Error</h3>
+        <p><strong>Problem:</strong> A coordination team uncovered that a $1M rebill occurred when a user resubmitted an outdated rate sheet[cite: 5]. Salesforce had no guardrails to prevent this[cite: 6].</p>
+        <p><strong>Solution:</strong> Built an invisible launcher to detect outdated dates and configured a high-visibility blocking warning[cite: 6].</p>
+        <p class="outcome">Outcome: Stopped high-risk billing errors before they reached Finance[cite: 8].</p>
+      </div>
+
+      <div class="case-study">
+        <h3 class="h3">Reduced IT Backlog & Quick Insights</h3>
+        <p><strong>Problem:</strong> Recruiters needed a quick way to assess candidate engagement in Salesforce[cite: 9].</p>
+        <p><strong>Solution:</strong> Partnered with the Product Owner to remove the item from the Dev backlog. Designed WalkMe launchers that display color-coded levels dynamically[cite: 11].</p>
+        <p class="outcome">Outcome: Delivered a production-ready solution within 36 hours.</p>
+      </div>
+
+      <h2 class="h2">Instructional Design Samples</h2>
+      <p>I'm still in the process of migrating my samples from Squarespace. In the meantime, please enjoy this game. 
+         <a href="Michelle%20Hulan%20-%20Resume.docx" class="resume-link" download="MichelleHulan_Resume.docx">Download my resume.</a>
+      </p>
+
+      <div id="game-container" onclick="jump()">
+        <div id="score">00000</div>
+        <div id="pomeranian"></div>
+      </div>
+      <p class="instructions">Press <b>Space</b> or Click to Start!</p>
+    </main>
+  </div>
+
+  <script>
+    const pom = document.getElementById("pomeranian");
+    const container = document.getElementById("game-container");
+    const scoreElement = document.getElementById("score");
+    let score = 0, isJumping = false, gameActive = true, gameOver = false, gameStarted = false;
+
+    function jump() {
+      // Start the game on the first interaction
+      if (!gameStarted && !gameOver) {
+        gameStarted = true;
+        createBlock();
+        document.querySelector(".instructions").innerHTML = "Press <b>Space</b> to jump!";
+        return;
+      }
+      
+      if (gameOver) { location.reload(); return; }
+      if (isJumping || !gameActive) return;
+      
+      isJumping = true;
+      pom.classList.add("jump");
+      setTimeout(() => { pom.classList.remove("jump"); isJumping = false; }, 500);
+    }
+
+    document.addEventListener("keydown", (e) => { 
+      if (e.code === "Space") { 
+        e.preventDefault(); 
+        jump(); 
+      } 
+    });
+
+    function createBlock() {
+      if (!gameActive || gameOver) return;
+      const block = document.createElement("div");
+      block.classList.add("block");
+      const heights = [30, 50, 60];
+      block.style.height = heights[Math.floor(Math.random() * heights.length)] + "px";
+      container.appendChild(block);
+
+      let position = -50;
+      let moveInterval = setInterval(() => {
+        if (!gameActive) { clearInterval(moveInterval); return; }
+        if (position > container.offsetWidth) {
+          clearInterval(moveInterval);
+          if (container.contains(block)) { 
+            container.removeChild(block); 
+            score += 10; 
+            scoreElement.innerText = score.toString().padStart(5, '0'); 
+          }
+        } else { position += 7; block.style.right = position + "px"; }
+
+        const pomRect = pom.getBoundingClientRect(), blockRect = block.getBoundingClientRect();
+        if (blockRect.left < pomRect.right - 5 && blockRect.right > pomRect.left + 5 && blockRect.top < pomRect.bottom - 2) {
+          gameActive = false; gameOver = true;
+          container.classList.add("game-paused");
+          document.querySelector(".instructions").innerHTML = "<b style='color: #d32f2f;'>GAME OVER!</b> Press Space to try again.";
+        }
+      }, 20);
+      
+      setTimeout(() => { if (!gameOver) createBlock(); }, Math.random() * 1000 + 800);
+    }
+  </script>
+</body>
+</html>
