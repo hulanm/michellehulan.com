@@ -171,6 +171,28 @@
       text-align: center;
     }
 
+    .play-button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 32px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .play-button:hover {
+      background: #1b5e20;
+    }
+
+    .play-button:active {
+      transform: scale(0.98);
+    }
+
     footer {
       margin-top: 48px;
       font-size: 12px;
@@ -191,13 +213,14 @@
       </nav>
     </header>
 
+    <main class="content-section">
       <section class="content-section">
-        <h2 class="h2">Hi, I’m Michelle.</h2>
+        <h2 class="h2">Hi, I'm Michelle.</h2>
         <p>
-          I’m a Senior Learning Experience Designer specializing in user adoption and in‑app learning experiences.
-          Over the last six years, I’ve designed NYC policy and compliance training, built scalable learning resources,
+          I'm a Senior Learning Experience Designer specializing in user adoption and in‑app learning experiences.
+          Over the last six years, I've designed NYC policy and compliance training, built scalable learning resources,
           and created in‑app guidance that accelerates adoption and reduces user friction.
-          Most recently, I’ve focused on Digital Adoption using WalkMe—partnering closely with IT developers to
+          Most recently, I've focused on Digital Adoption using WalkMe—partnering closely with IT developers to
           streamline workflows, reduce errors, and improve real‑time user experience in Salesforce.
         </p>
 
@@ -207,14 +230,14 @@
         <div class="case-study">
           <h4>Prevented a $1M Billing Error</h4>
           <p><strong>Problem:</strong> A coordination team uncovered that a $1M rebill occurred when a user resubmitted an outdated rate sheet. Salesforce had no guardrails to prevent this.</p>
-          <p><strong>Solution:</strong> Built an invisible launcher to detect whether the selected date occurs before today and configured a high‑visibility blocking warning that stops the save action and alerts the user before submission. Used WalkMe data to remove the block for edge‑case users who legitimately require this workflow.
-         <p><strong>Outcome:</strong> Stopped high‑risk billing errors before they reached Finance. Increased leadership confidence in WalkMe as a preventative control.</p>
+          <p><strong>Solution:</strong> Built an invisible launcher to detect whether the selected date occurs before today and configured a high‑visibility blocking warning that stops the save action and alerts the user before submission. Used WalkMe data to remove the block for edge‑case users who legitimately require this workflow.</p>
+          <p><strong>Outcome:</strong> Stopped high‑risk billing errors before they reached Finance. Increased leadership confidence in WalkMe as a preventative control.</p>
         </div>
 
         <div class="case-study">
           <h4>Reduced IT Backlog & Delivered Quick Insights</h4>
           <p><strong>Problem:</strong> Recruiters needed a quick way to assess candidate engagement in Salesforce. A Dev backlog item requested a color‑coded indicator on each candidate's page to indicate how often they responded to recruiters.</p>
-          <p><strong>Solution:</strong> Partnered with the Product Owner to remove the item from the Dev backlog. Designed and deployed WalkMe launchers that display color‑coded engagement levels dynamically. 
+          <p><strong>Solution:</strong> Partnered with the Product Owner to remove the item from the Dev backlog. Designed and deployed WalkMe launchers that display color‑coded engagement levels dynamically.</p>
           <p><strong>Outcome:</strong> Recruiters can instantly identify high‑engagement candidates. Reduced Dev backlog and freed development capacity. Delivered the end‑to‑end solution within 36 hours.</p>
         </div>
 
@@ -234,31 +257,54 @@
         </p>
       </section>
 
+      <!-- Game Start Button -->
+      <button class="play-button" id="play-btn">Play Game</button>
+
       <!-- Single game instance -->
-      <div id="game-container" onclick="jump()">
+      <div id="game-container" onclick="jump()" style="display: none;">
         <div id="score">00000</div>
         <div id="pomeranian"></div>
       </div>
-      <p class="instructions">Press <b>Space</b> or click to jump the blocks!</p>
+      <p class="instructions" id="instructions" style="display: none;">Press <b>Space</b> or click to jump the blocks!</p>
     </main>
 
     <footer>
-      &copy; 2025 Michelle Hulan
+      &copy; 2026 Michelle Hulan
     </footer>
   </div>
 
   <script>
+    const playBtn = document.getElementById("play-btn");
+    const gameContainer = document.getElementById("game-container");
     const pom = document.getElementById("pomeranian");
     const container = document.getElementById("game-container");
     const scoreElement = document.getElementById("score");
-    const instructionsEl = document.querySelector(".instructions");
+    const instructionsEl = document.getElementById("instructions");
 
     let score = 0;
     let isJumping = false;
-    let gameActive = true;
+    let gameActive = false;
     let gameOver = false;
+    let gameStarted = false;
+    let lastBlockTime = 0;
+
+    playBtn.addEventListener("click", startGame);
+
+    function startGame() {
+      gameStarted = true;
+      gameActive = true;
+      gameOver = false;
+      score = 0;
+      scoreElement.textContent = score.toString().padStart(5, "0");
+      lastBlockTime = 0;
+      playBtn.style.display = "none";
+      gameContainer.style.display = "block";
+      instructionsEl.style.display = "block";
+      createBlock();
+    }
 
     function jump() {
+      if (!gameStarted) return;
       if (gameOver) {
         restartGame();
         return;
@@ -282,6 +328,7 @@
       scoreElement.textContent = score.toString().padStart(5, "0");
       gameActive = true;
       gameOver = false;
+      lastBlockTime = 0;
       container.classList.remove("game-paused");
       instructionsEl.innerHTML = "Press <b>Space</b> or click to jump the blocks!";
 
@@ -335,9 +382,9 @@
         const blockRect = block.getBoundingClientRect();
 
         const overlap =
-          blockRect.left < pomRect.right - 5 &&
-          blockRect.right > pomRect.left + 5 &&
-          blockRect.top < pomRect.bottom - 2;
+          blockRect.left < pomRect.right - 8 &&
+          blockRect.right > pomRect.left + 8 &&
+          blockRect.top < pomRect.bottom - 5;
 
         if (overlap) {
           gameActive = false;
@@ -348,13 +395,12 @@
         }
       }, tickMs);
 
-      // Schedule next block
-      const nextDelay = Math.random() * 1000 + 800; // 800–1800ms
+      // Schedule next block with minimum spacing to prevent blocks too close
+      const minDelay = 1500; // minimum 1500ms between blocks
+      const maxDelay = 2500; // maximum 2500ms between blocks
+      const nextDelay = Math.random() * (maxDelay - minDelay) + minDelay;
       setTimeout(() => { if (!gameOver) createBlock(); }, nextDelay);
     }
-
-    // Kick off the first block
-    createBlock();
   </script>
 </body>
 </html>
