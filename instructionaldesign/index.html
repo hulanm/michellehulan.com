@@ -198,6 +198,94 @@
       font-size: 12px;
       color: var(--muted);
     }
+
+    /* =====================
+       GAME OVER MODAL (minimal/modern)
+    ===================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 17, 17, 0.45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 9999;
+    }
+
+    .modal-overlay.is-open { display: flex; }
+
+    .modal {
+      width: min(520px, 100%);
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .modal__title {
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -0.01em;
+    }
+
+    .modal__body {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .modal__meta {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      color: #666;
+      margin: 0 0 14px;
+    }
+
+    .modal__actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      color: #111;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.05s, background 0.2s, border-color 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(0,0,0,0.03);
+      border-color: rgba(0,0,0,0.2);
+    }
+
+    .btn:active { transform: translateY(1px); }
+
+    .btn--primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn--primary:hover { background: #1b5e20; border-color: #1b5e20; }
   </style>
 </head>
 <body>
@@ -273,6 +361,24 @@
     </footer>
   </div>
 
+  <!-- Game Over Modal -->
+  <div class="modal-overlay" id="gameover-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 class="modal__title" id="modal-title">Great job.</h3>
+      <p class="modal__body" id="modal-body">
+        It’s okay to fail — that’s how better experiences get designed. If you want calm, scalable learning experiences
+        (and fewer “glitchy” moments), you should hire Michelle.
+      </p>
+      <p class="modal__meta" id="modal-meta">Score: 00000 · Time: 0.0s</p>
+      <div class="modal__actions">
+        <button class="btn" id="modal-restart" type="button">Play again</button>
+        <a class="btn btn--primary" id="modal-hire"
+           href="mailto:michellehulan@gmail.com?subject=Let's%20work%20together&body=Hi%20Michelle%2C%0A%0AI%20played%20your%20site%20game%20and%20would%20love%20to%20chat.%0A%0A-%20"
+        >Hire Michelle</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     const playBtn = document.getElementById("play-btn");
     const gameContainer = document.getElementById("game-container");
@@ -281,34 +387,104 @@
     const scoreElement = document.getElementById("score");
     const instructionsEl = document.getElementById("instructions");
 
+    // Modal elements
+    const modalOverlay = document.getElementById("gameover-modal");
+    const modalMeta = document.getElementById("modal-meta");
+    const modalRestartBtn = document.getElementById("modal-restart");
+
     let score = 0;
     let isJumping = false;
     let gameActive = false;
     let gameOver = false;
     let gameStarted = false;
-    let lastBlockTime = 0;
+
+    // --- New game-loop state (requestAnimationFrame) ---
+    let rafId = null;
+    let lastTs = 0;
+
+    // time-based difficulty
+    let runSeconds = 0;
+
+    // Obstacles
+    let blocks = [];
+
+    const difficulty = {
+      baseSpeedPxPerSec: 340,
+      speedPxPerSec: 340,
+      minGapPx: 360,
+      maxGapPx: 560,
+      maxSpeedPxPerSec: 680,
+      minMinGapPx: 260
+    };
+
+    let nextSpawnGapPx = 420;
+    let spawnX = 0;
 
     playBtn.addEventListener("click", startGame);
+
+    function openModal() {
+      modalOverlay.classList.add("is-open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove("is-open");
+      modalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    modalRestartBtn.addEventListener("click", () => {
+      closeModal();
+      restartGame();
+    });
+
+    // Close modal when clicking outside the card
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
 
     function startGame() {
       gameStarted = true;
       gameActive = true;
       gameOver = false;
+
+      closeModal();
+
+      lastTs = 0;
+      runSeconds = 0;
+
       score = 0;
       scoreElement.textContent = score.toString().padStart(5, "0");
-      lastBlockTime = 0;
+      instructionsEl.innerHTML = "Press <b>Space</b> or click to jump the blocks!";
+
+      difficulty.speedPxPerSec = difficulty.baseSpeedPxPerSec;
+      difficulty.minGapPx = 360;
+
+      clearBlocks();
+
       playBtn.style.display = "none";
       gameContainer.style.display = "block";
       instructionsEl.style.display = "block";
-      createBlock();
+      container.classList.remove("game-paused");
+
+      spawnX = container.clientWidth + 50;
+      nextSpawnGapPx = randomGapPx();
+
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(loop);
     }
 
     function jump() {
       if (!gameStarted) return;
+
       if (gameOver) {
+        // If they press Space/click after game over, restart quickly too
+        closeModal();
         restartGame();
         return;
       }
+
       if (isJumping || !gameActive) return;
 
       isJumping = true;
@@ -320,66 +496,99 @@
     }
 
     function restartGame() {
-      // Clear existing blocks
-      document.querySelectorAll("#game-container .block").forEach(b => b.remove());
-
-      // Reset state
-      score = 0;
-      scoreElement.textContent = score.toString().padStart(5, "0");
       gameActive = true;
       gameOver = false;
-      lastBlockTime = 0;
       container.classList.remove("game-paused");
-      instructionsEl.innerHTML = "Press <b>Space</b> or click to jump the blocks!";
 
-      // Start spawning blocks again
-      createBlock();
+      lastTs = 0;
+      runSeconds = 0;
+
+      instructionsEl.innerHTML = "Press <b>Space</b> or click to jump the blocks!";
+      score = 0;
+      scoreElement.textContent = score.toString().padStart(5, "0");
+
+      difficulty.speedPxPerSec = difficulty.baseSpeedPxPerSec;
+      difficulty.minGapPx = 360;
+      clearBlocks();
+
+      spawnX = container.clientWidth + 50;
+      nextSpawnGapPx = randomGapPx();
+
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(loop);
     }
+
+    container.addEventListener("click", jump);
 
     document.addEventListener("keydown", (e) => {
       if (e.code === "Space") {
         e.preventDefault();
         jump();
       }
+      // Optional: escape closes modal
+      if (e.code === "Escape") {
+        closeModal();
+      }
     });
 
-    function createBlock() {
-      if (!gameActive || gameOver) return;
+    window.addEventListener("resize", () => {
+      spawnX = container.clientWidth + 50;
+    });
 
-      const block = document.createElement("div");
-      block.classList.add("block");
-      const heights = [30, 50, 60];
-      block.style.height = heights[Math.floor(Math.random() * heights.length)] + "px";
-      container.appendChild(block);
+    function loop(ts) {
+      if (!gameActive) return;
 
-      let position = -50;
-      const speed = 7; // px / tick
-      const tickMs = 20;
+      if (!lastTs) lastTs = ts;
+      const dt = Math.min(0.05, (ts - lastTs) / 1000);
+      lastTs = ts;
 
-      const moveInterval = setInterval(() => {
-        if (!gameActive) {
-          clearInterval(moveInterval);
-          return;
+      runSeconds += dt;
+
+      // Time-based ramp (playable)
+      const targetSpeed = Math.min(
+        difficulty.maxSpeedPxPerSec,
+        difficulty.baseSpeedPxPerSec + runSeconds * 12
+      );
+      difficulty.speedPxPerSec = lerp(difficulty.speedPxPerSec, targetSpeed, 0.06);
+
+      const targetMinGap = Math.max(
+        difficulty.minMinGapPx,
+        360 - runSeconds * 3.2
+      );
+      difficulty.minGapPx = lerp(difficulty.minGapPx, targetMinGap, 0.04);
+
+      const dx = difficulty.speedPxPerSec * dt;
+      for (const b of blocks) {
+        b.x -= dx;
+        b.el.style.left = b.x + "px";
+      }
+
+      for (let i = blocks.length - 1; i >= 0; i--) {
+        const b = blocks[i];
+
+        if (!b.scored && b.x + b.width < 0) {
+          b.scored = true;
+          score += 10;
+          scoreElement.textContent = score.toString().padStart(5, "0");
         }
 
-        // Move the block from right:-50 to beyond the container width
-        position += speed;
-        block.style.right = position + "px";
-
-        // Score when it exits the container
-        if (position > container.offsetWidth + 50) {
-          clearInterval(moveInterval);
-          if (container.contains(block)) {
-            container.removeChild(block);
-            score += 10;
-            scoreElement.textContent = score.toString().padStart(5, "0");
-          }
-          return;
+        if (b.x + b.width < -80) {
+          b.el.remove();
+          blocks.splice(i, 1);
         }
+      }
 
-        // Collision detection
-        const pomRect = pom.getBoundingClientRect();
-        const blockRect = block.getBoundingClientRect();
+      const last = blocks[blocks.length - 1];
+      const canSpawn = !last || (spawnX - (last.x + last.width)) >= nextSpawnGapPx;
+
+      if (canSpawn) {
+        spawnBlock();
+        nextSpawnGapPx = randomGapPx();
+      }
+
+      const pomRect = pom.getBoundingClientRect();
+      for (const b of blocks) {
+        const blockRect = b.el.getBoundingClientRect();
 
         const overlap =
           blockRect.left < pomRect.right - 8 &&
@@ -387,19 +596,64 @@
           blockRect.top < pomRect.bottom - 5;
 
         if (overlap) {
-          gameActive = false;
-          gameOver = true;
-          container.classList.add("game-paused");
-          instructionsEl.innerHTML = "<b style='color:#d32f2f;'>GAME OVER!</b> Press Space or click to try again.";
-          clearInterval(moveInterval);
+          endGame();
+          return;
         }
-      }, tickMs);
+      }
 
-      // Schedule next block with minimum spacing to prevent blocks too close
-      const minDelay = 1500; // minimum 1500ms between blocks
-      const maxDelay = 2500; // maximum 2500ms between blocks
-      const nextDelay = Math.random() * (maxDelay - minDelay) + minDelay;
-      setTimeout(() => { if (!gameOver) createBlock(); }, nextDelay);
+      rafId = requestAnimationFrame(loop);
+    }
+
+    function spawnBlock() {
+      const el = document.createElement("div");
+      el.classList.add("block");
+
+      const heights = [30, 50, 60];
+      const h = heights[Math.floor(Math.random() * heights.length)];
+      el.style.height = h + "px";
+
+      el.style.left = spawnX + "px";
+      el.style.right = "auto";
+
+      container.appendChild(el);
+
+      blocks.push({
+        el,
+        x: spawnX,
+        width: 25,
+        scored: false
+      });
+    }
+
+    function endGame() {
+      gameActive = false;
+      gameOver = true;
+      container.classList.add("game-paused");
+      cancelAnimationFrame(rafId);
+
+      // Keep the inline instruction too (nice for keyboard users)
+      instructionsEl.innerHTML =
+        "<b style='color:#d32f2f;'>GAME OVER!</b> Press Space or click to try again.";
+
+      // Update and show modal
+      modalMeta.textContent =
+        `Score: ${String(score).padStart(5, "0")} · Time: ${runSeconds.toFixed(1)}s`;
+      openModal();
+    }
+
+    function clearBlocks() {
+      blocks.forEach(b => b.el.remove());
+      blocks = [];
+    }
+
+    function randomGapPx() {
+      const min = difficulty.minGapPx;
+      const max = Math.max(min + 80, difficulty.maxGapPx);
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
     }
   </script>
 </body>
